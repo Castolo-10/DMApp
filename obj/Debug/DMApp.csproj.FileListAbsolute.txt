@@ -1,0 +1,10 @@
+C:\Users\USUARIO\Documents\dev\DMApp\obj\Debug\DMApp.csprojAssemblyReference.cache
+C:\Users\USUARIO\Documents\dev\DMApp\obj\Debug\DMApp.Form1.resources
+C:\Users\USUARIO\Documents\dev\DMApp\obj\Debug\DMApp.Properties.Resources.resources
+C:\Users\USUARIO\Documents\dev\DMApp\obj\Debug\DMApp.csproj.GenerateResource.cache
+C:\Users\USUARIO\Documents\dev\DMApp\obj\Debug\DMApp.csproj.CoreCompileInputs.cache
+C:\Users\USUARIO\Documents\dev\DMApp\bin\Debug\DMApp.exe.config
+C:\Users\USUARIO\Documents\dev\DMApp\bin\Debug\DMApp.exe
+C:\Users\USUARIO\Documents\dev\DMApp\bin\Debug\DMApp.pdb
+C:\Users\USUARIO\Documents\dev\DMApp\obj\Debug\DMApp.exe
+C:\Users\USUARIO\Documents\dev\DMApp\obj\Debug\DMApp.pdb
