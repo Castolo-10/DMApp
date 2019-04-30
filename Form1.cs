@@ -21,36 +21,44 @@ namespace DMApp
         private void CargarArchivoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             openFileDialog1.Title = "Abrir archivo";
-            openFileDialog1.Filter = "Archivos CSV (*.csv)|*.csv";
-            if(openFileDialog1.ShowDialog() == DialogResult.OK)
+            openFileDialog1.Filter = "Archivos CSV (*.csv)|*.csv|Archivos DATA(.data)|*.data";
+            //openFileDialog1.Filter = "Archivos CSV (*.csv)|*.csv";
+            openFileDialog1.FileName = "";
+            openFileDialog1.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 var filepath = openFileDialog1.FileName;
-
                 DataTable dt = new DataTable();
-                string[] lines = File.ReadAllLines(filepath);
-                if(lines.Length > 0)
+                if (filepath.Contains(".csv"))
                 {
-                    // Leemos el header
-                    string firstLine = lines[0];
-                    string[] headerLabels = firstLine.Split(',');
-
-                    foreach(string headerWord in headerLabels)
+                    string[] lines = File.ReadAllLines(filepath);
+                    if (lines.Length > 0)
                     {
-                        dt.Columns.Add(new DataColumn(headerWord));
-                    }
+                        // Leemos el header
+                        string firstLine = lines[0];
+                        string[] headerLabels = firstLine.Split(',');
 
-                    //Leemos los datos
-                    for (int r = 1; r < lines.Length; r++)
-                    {
-                        string[] dataWords = lines[r].Split(',');
-                        DataRow dr = dt.NewRow();
-                        int columnIndex = 0;
                         foreach (string headerWord in headerLabels)
                         {
-                            dr[headerWord] = dataWords[columnIndex++];
+                            dt.Columns.Add(new DataColumn(headerWord));
                         }
-                        dt.Rows.Add(dr);
+
+                        //Leemos los datos
+                        for (int r = 1; r < lines.Length; r++)
+                        {
+                            string[] dataWords = lines[r].Split(',');
+                            DataRow dr = dt.NewRow();
+                            int columnIndex = 0;
+                            foreach (string headerWord in headerLabels)
+                            {
+                                dr[headerWord] = dataWords[columnIndex++];
+                            }
+                            dt.Rows.Add(dr);
+                        }
                     }
+                }
+                else if(filepath.Contains(".data"))
+                {
 
                 }
                 if (dt.Rows.Count > 0)
