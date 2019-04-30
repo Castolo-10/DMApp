@@ -54,9 +54,7 @@ namespace DMApp
 
                 }
                 if (dt.Rows.Count > 0)
-                {
                     dataGridView1.DataSource = dt;
-                }
             }
         }
     }
