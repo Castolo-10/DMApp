@@ -36,6 +36,11 @@
             this.salirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.InformaciontextBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.NombreConjuntoDtextBox = new System.Windows.Forms.TextBox();
+            this.Pruebastext = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -102,16 +107,61 @@
             this.dataGridView1.Size = new System.Drawing.Size(563, 411);
             this.dataGridView1.TabIndex = 1;
             // 
+            // InformaciontextBox
+            // 
+            this.InformaciontextBox.Location = new System.Drawing.Point(584, 71);
+            this.InformaciontextBox.Name = "InformaciontextBox";
+            this.InformaciontextBox.Size = new System.Drawing.Size(152, 20);
+            this.InformaciontextBox.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(584, 55);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(102, 13);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Información General";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(581, 11);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(149, 13);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Nombre del conjunto de datos";
+            // 
+            // NombreConjuntoDtextBox
+            // 
+            this.NombreConjuntoDtextBox.Location = new System.Drawing.Point(584, 27);
+            this.NombreConjuntoDtextBox.Name = "NombreConjuntoDtextBox";
+            this.NombreConjuntoDtextBox.Size = new System.Drawing.Size(152, 20);
+            this.NombreConjuntoDtextBox.TabIndex = 5;
+            // 
+            // Pruebastext
+            // 
+            this.Pruebastext.Location = new System.Drawing.Point(599, 214);
+            this.Pruebastext.Name = "Pruebastext";
+            this.Pruebastext.Size = new System.Drawing.Size(131, 20);
+            this.Pruebastext.TabIndex = 6;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.Pruebastext);
+            this.Controls.Add(this.NombreConjuntoDtextBox);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.InformaciontextBox);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.dataGridView1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "DMApp";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
@@ -130,6 +180,11 @@
         private System.Windows.Forms.ToolStripMenuItem guardarToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem guardarComoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem salirToolStripMenuItem;
+        private System.Windows.Forms.TextBox InformaciontextBox;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox NombreConjuntoDtextBox;
+        private System.Windows.Forms.TextBox Pruebastext;
     }
 }
 

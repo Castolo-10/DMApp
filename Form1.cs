@@ -13,6 +13,10 @@ namespace DMApp
 {
     public partial class Form1 : Form
     {
+        List<string> atributo = new List<string>();
+        List<string> faltante = new List<string>();
+        List<string> cabecera = new List<string>();
+
         public Form1()
         {
             InitializeComponent();
@@ -20,8 +24,10 @@ namespace DMApp
 
         private void CargarArchivoToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            
+
             openFileDialog1.Title = "Abrir archivo";
-            openFileDialog1.Filter = "Archivos CSV (*.csv)|*.csv|Archivos DATA(.data)|*.data";
+            openFileDialog1.Filter = "Archivos CSV (*.csv)|*.csv|Archivos DATA(*.data)|*.data";
             //openFileDialog1.Filter = "Archivos CSV (*.csv)|*.csv";
             openFileDialog1.FileName = "";
             openFileDialog1.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -57,13 +63,122 @@ namespace DMApp
                         }
                     }
                 }
-                else if(filepath.Contains(".data"))
+                else if (filepath.Contains(".data"))
                 {
 
+                    string[] lines = File.ReadAllLines(filepath);
+                    if (lines.Length > 0)
+                    {
+                        int x = 0;
+                        int y = 0;
+                        bool df = false;
+                        // Leemos la info general
+                        string firstLine = lines[0];
+                        
+                        List<string> headerLabels = new List<string>();
+                        
+
+
+                        foreach (string lin in File.ReadAllLines(filepath))
+                        {
+                            //Leer información general
+                            if (lin.Substring(0, 2) == "%%")
+                            {
+                                InformaciontextBox.Text += "\n" + lin.Substring(2);
+                            }
+
+                            //Leer nombre del conjunto de datos
+                            if (lin.Substring(0, 5) == "@rela")
+                            {
+                                NombreConjuntoDtextBox.Text += "\n" + lin.Substring(10);
+                            }
+
+                            //Leer atributos, y guardarlos en una lista de strings (toda la
+                            //linea correspondiente al dato
+                            if (lin.Substring(0, 5) == "@attr")
+                            {
+                                
+                                
+                                atributo.Add(lin.Substring(11));
+                                Pruebastext.Text += "\n" + atributo[x];
+
+                                //Crear cabecera
+                                
+                                 int a =0;
+                                 for (int i=0; i< atributo[x].Length; i++)
+                                 {
+                                     if (atributo[x][i] != ' ')
+                                     {
+                                         a++;
+
+                                     }
+                                     else
+                                         i=atributo[x].Count() + 1;
+                                 }
+                                 
+
+
+                                string copia = atributo[x].Substring(0,a);
+                                cabecera.Add(copia);
+                                //headerLabels[x] = copia;
+                                
+                                x++;
+                            }
+
+                            //leer valores faltantes y guardarlos en una lista de faltantes
+                            if (lin.Substring(0, 5) == "@miss")
+                            {
+
+                                
+                                faltante.Add(lin.Substring(13));
+                                Pruebastext.Text += "\n" + faltante[y];
+                                y++;
+                            }
+
+                            //localiza la línea @data para a partir de esta leer los datos
+                            if (lin.Substring(0, 5) == "@data")
+                            {
+                                df = true;
+                                //falta leer cabecera con atributo list
+                                foreach (string headerWord in cabecera)
+                                {
+                                    dt.Columns.Add(new DataColumn(headerWord));
+                                }
+                            }
+
+                            //leer los datos y situarlos en la tabla
+                            //error de no se qué, segun yo está bien >:C
+                           /* if(df==true)
+                            {
+                               
+
+
+                                string[] dataWords = lin.Split(',');
+                                DataRow dr = dt.NewRow();
+                                int columnIndex = 0;
+
+                                foreach (string headerWord in cabecera)
+                                    {
+                                        dr[headerWord] = dataWords[columnIndex++];
+                                    }
+                                    dt.Rows.Add(dr);
+                                
+                            }
+                            */
+                        }
+                        
+                    }
+
+
                 }
-                if (dt.Rows.Count > 0)
+                if (dt.Rows.Count >= 0)
                     dataGridView1.DataSource = dt;
             }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

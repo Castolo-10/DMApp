@@ -18,3 +18,23 @@ C:\Users\Castolo10\Documents\dev\DMApp\obj\Debug\DMApp.csproj.CoreCompileInputs.
 C:\Users\Castolo10\Documents\dev\DMApp\obj\Debug\DMApp.exe
 C:\Users\Castolo10\Documents\dev\DMApp\obj\Debug\DMApp.pdb
 C:\Users\Castolo10\Documents\dev\DMApp\bin\Debug\DMApp.pdb
+C:\Users\Vanessa\Downloads\DMApp-master\DMApp-master\bin\Debug\DMApp.exe.config
+C:\Users\Vanessa\Downloads\DMApp-master\DMApp-master\bin\Debug\DMApp.exe
+C:\Users\Vanessa\Downloads\DMApp-master\DMApp-master\bin\Debug\DMApp.pdb
+C:\Users\Vanessa\Downloads\DMApp-master\DMApp-master\obj\Debug\DMApp.csprojAssemblyReference.cache
+C:\Users\Vanessa\Downloads\DMApp-master\DMApp-master\obj\Debug\DMApp.Form1.resources
+C:\Users\Vanessa\Downloads\DMApp-master\DMApp-master\obj\Debug\DMApp.Properties.Resources.resources
+C:\Users\Vanessa\Downloads\DMApp-master\DMApp-master\obj\Debug\DMApp.csproj.GenerateResource.cache
+C:\Users\Vanessa\Downloads\DMApp-master\DMApp-master\obj\Debug\DMApp.csproj.CoreCompileInputs.cache
+C:\Users\Vanessa\Downloads\DMApp-master\DMApp-master\obj\Debug\DMApp.exe
+C:\Users\Vanessa\Downloads\DMApp-master\DMApp-master\obj\Debug\DMApp.pdb
+E:\Mineria de datos\Proyecto\Etapa1\DMApp-master\bin\Debug\DMApp.exe.config
+E:\Mineria de datos\Proyecto\Etapa1\DMApp-master\bin\Debug\DMApp.exe
+E:\Mineria de datos\Proyecto\Etapa1\DMApp-master\bin\Debug\DMApp.pdb
+E:\Mineria de datos\Proyecto\Etapa1\DMApp-master\obj\Debug\DMApp.csprojAssemblyReference.cache
+E:\Mineria de datos\Proyecto\Etapa1\DMApp-master\obj\Debug\DMApp.Form1.resources
+E:\Mineria de datos\Proyecto\Etapa1\DMApp-master\obj\Debug\DMApp.Properties.Resources.resources
+E:\Mineria de datos\Proyecto\Etapa1\DMApp-master\obj\Debug\DMApp.csproj.GenerateResource.cache
+E:\Mineria de datos\Proyecto\Etapa1\DMApp-master\obj\Debug\DMApp.csproj.CoreCompileInputs.cache
+E:\Mineria de datos\Proyecto\Etapa1\DMApp-master\obj\Debug\DMApp.exe
+E:\Mineria de datos\Proyecto\Etapa1\DMApp-master\obj\Debug\DMApp.pdb
