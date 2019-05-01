@@ -28,7 +28,6 @@ namespace DMApp
 
             openFileDialog1.Title = "Abrir archivo";
             openFileDialog1.Filter = "Archivos CSV (*.csv)|*.csv|Archivos DATA(*.data)|*.data";
-            //openFileDialog1.Filter = "Archivos CSV (*.csv)|*.csv";
             openFileDialog1.FileName = "";
             openFileDialog1.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
@@ -76,11 +75,25 @@ namespace DMApp
                         string firstLine = lines[0];
                         
                         List<string> headerLabels = new List<string>();
-                        
 
 
                         foreach (string lin in File.ReadAllLines(filepath))
                         {
+                            //leer los datos y situarlos en la tabla
+                            if (df == true)
+                            {
+                                string[] dataWords = lin.Split(',');
+                                DataRow dr = dt.NewRow();
+                                int columnIndex = 0;
+
+                                foreach (string headerWord in cabecera)
+                                {
+                                    dr[headerWord] = dataWords[columnIndex++];
+                                }
+                                dt.Rows.Add(dr);
+
+                            }
+
                             //Leer información general
                             if (lin.Substring(0, 2) == "%%")
                             {
@@ -121,7 +134,7 @@ namespace DMApp
                                 string copia = atributo[x].Substring(0,a);
                                 cabecera.Add(copia);
                                 //headerLabels[x] = copia;
-                                
+
                                 x++;
                             }
 
@@ -145,26 +158,6 @@ namespace DMApp
                                     dt.Columns.Add(new DataColumn(headerWord));
                                 }
                             }
-
-                            //leer los datos y situarlos en la tabla
-                            //error de no se qué, segun yo está bien >:C
-                           /* if(df==true)
-                            {
-                               
-
-
-                                string[] dataWords = lin.Split(',');
-                                DataRow dr = dt.NewRow();
-                                int columnIndex = 0;
-
-                                foreach (string headerWord in cabecera)
-                                    {
-                                        dr[headerWord] = dataWords[columnIndex++];
-                                    }
-                                    dt.Rows.Add(dr);
-                                
-                            }
-                            */
                         }
                         
                     }
