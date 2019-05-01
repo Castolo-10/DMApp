@@ -16,6 +16,7 @@ namespace DMApp
         List<string> atributo = new List<string>();
         List<string> faltante = new List<string>();
         List<string> cabecera = new List<string>();
+        string filepath;
 
         public Form1()
         {
@@ -32,7 +33,7 @@ namespace DMApp
             openFileDialog1.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                var filepath = openFileDialog1.FileName;
+                filepath = openFileDialog1.FileName;
                 DataTable dt = new DataTable();
                 if (filepath.Contains(".csv"))
                 {
@@ -172,6 +173,55 @@ namespace DMApp
         private void Form1_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void GuardarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                System.IO.StreamWriter csvFileWriter = new StreamWriter(filepath, false);
+
+                string columnHeaderText = "";
+
+                int countColumn = dataGridView1.ColumnCount - 1;
+
+                if (countColumn >= 0)
+                {
+                    columnHeaderText = dataGridView1.Columns[0].HeaderText;
+                }
+
+                for (int i = 1; i <= countColumn; i++)
+                {
+                    columnHeaderText = columnHeaderText + ',' + dataGridView1.Columns[i].HeaderText;
+                }
+
+
+                csvFileWriter.WriteLine(columnHeaderText);
+
+                foreach (DataGridViewRow dataRowObject in dataGridView1.Rows)
+                {
+                    if (!dataRowObject.IsNewRow)
+                    {
+                        string dataFromGrid = "";
+
+                        for (int i = 0; i <= countColumn; i++)
+                        {
+                            if (i != countColumn)
+                                dataFromGrid += dataRowObject.Cells[i].Value.ToString() + ',';
+                            else if (i == countColumn)
+                                dataFromGrid += dataRowObject.Cells[i].Value.ToString();
+
+                        }
+                        csvFileWriter.WriteLine(dataFromGrid);
+                    }
+                }
+                csvFileWriter.Flush();
+                csvFileWriter.Close();
+            }
+            catch (Exception exceptionObject)
+            {
+                MessageBox.Show(exceptionObject.ToString());
+            }
         }
     }
 }

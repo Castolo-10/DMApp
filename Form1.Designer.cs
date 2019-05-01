@@ -80,6 +80,7 @@
             this.guardarToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G)));
             this.guardarToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
             this.guardarToolStripMenuItem.Text = "Guardar";
+            this.guardarToolStripMenuItem.Click += new System.EventHandler(this.GuardarToolStripMenuItem_Click);
             // 
             // guardarComoToolStripMenuItem
             // 
