@@ -167,6 +167,7 @@ namespace DMApp
                 }
                 if (dt.Rows.Count >= 0)
                     dataGridView1.DataSource = dt;
+                    MessageBox.Show("El archivo ha sido cargado correctamente","Aviso");
             }
         }
 
@@ -177,51 +178,115 @@ namespace DMApp
 
         private void GuardarToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            try
-            {
-                System.IO.StreamWriter csvFileWriter = new StreamWriter(filepath, false);
-
-                string columnHeaderText = "";
-
-                int countColumn = dataGridView1.ColumnCount - 1;
-
-                if (countColumn >= 0)
+            if (filepath.Contains(".csv")) {
+                try
                 {
-                    columnHeaderText = dataGridView1.Columns[0].HeaderText;
-                }
+                    System.IO.StreamWriter csvFileWriter = new StreamWriter(filepath, false);
 
-                for (int i = 1; i <= countColumn; i++)
-                {
-                    columnHeaderText = columnHeaderText + ',' + dataGridView1.Columns[i].HeaderText;
-                }
+                    string columnHeaderText = "";
 
-
-                csvFileWriter.WriteLine(columnHeaderText);
-
-                foreach (DataGridViewRow dataRowObject in dataGridView1.Rows)
-                {
-                    if (!dataRowObject.IsNewRow)
+                    int countColumn = dataGridView1.ColumnCount - 1;
+                    //Guardamos el header en un string
+                    if (countColumn >= 0)
                     {
-                        string dataFromGrid = "";
-
-                        for (int i = 0; i <= countColumn; i++)
-                        {
-                            if (i != countColumn)
-                                dataFromGrid += dataRowObject.Cells[i].Value.ToString() + ',';
-                            else if (i == countColumn)
-                                dataFromGrid += dataRowObject.Cells[i].Value.ToString();
-
-                        }
-                        csvFileWriter.WriteLine(dataFromGrid);
+                        columnHeaderText = dataGridView1.Columns[0].HeaderText;
                     }
+
+                    for (int i = 1; i <= countColumn; i++)
+                    {
+                        columnHeaderText = columnHeaderText + ',' + dataGridView1.Columns[i].HeaderText;
+                    }
+
+                    //Guarda el string del header en el csv
+                    csvFileWriter.WriteLine(columnHeaderText);
+
+                    //Leer los datos
+                    foreach (DataGridViewRow dataRowObject in dataGridView1.Rows)
+                    {
+                        if (!dataRowObject.IsNewRow)
+                        {
+                            string dataFromGrid = "";
+
+                            //Para cada fila genera la cadena con el formato
+                            for (int i = 0; i <= countColumn; i++)
+                            {
+                                if (i != countColumn)
+                                    dataFromGrid += dataRowObject.Cells[i].Value.ToString() + ',';
+                                else if (i == countColumn)
+                                    dataFromGrid += dataRowObject.Cells[i].Value.ToString();
+
+                            }
+                            //Escribe la fila al archivo
+                            csvFileWriter.WriteLine(dataFromGrid);
+                        }
+                    }
+                    csvFileWriter.Flush();
+                    csvFileWriter.Close();
                 }
-                csvFileWriter.Flush();
-                csvFileWriter.Close();
+                catch (Exception exceptionObject)
+                {
+                    MessageBox.Show(exceptionObject.ToString());
+                }
             }
-            catch (Exception exceptionObject)
+            else if (filepath.Contains(".data"))
             {
-                MessageBox.Show(exceptionObject.ToString());
+                try
+                {
+                    System.IO.StreamWriter csvFileWriter = new StreamWriter(filepath, false);
+
+                    csvFileWriter.WriteLine("%%" + InformaciontextBox.Text);
+                    csvFileWriter.WriteLine("@relation " + NombreConjuntoDtextBox.Text);
+
+                    string columnHeaderText = "";
+
+                    int countColumn = dataGridView1.ColumnCount - 1;
+                    //Guardamos el header en un string
+                    if (countColumn >= 0)
+                    {
+                        columnHeaderText = dataGridView1.Columns[0].HeaderText;
+                    }
+
+                    for (int i = 1; i <= countColumn; i++)
+                    {
+                        columnHeaderText = columnHeaderText + ',' + dataGridView1.Columns[i].HeaderText;
+                    }
+
+                    //Guarda el string del header en el csv
+                    csvFileWriter.WriteLine(columnHeaderText);
+
+                    //Leer los datos
+                    foreach (DataGridViewRow dataRowObject in dataGridView1.Rows)
+                    {
+                        if (!dataRowObject.IsNewRow)
+                        {
+                            string dataFromGrid = "";
+
+                            //Para cada fila genera la cadena con el formato
+                            for (int i = 0; i <= countColumn; i++)
+                            {
+                                if (i != countColumn)
+                                    dataFromGrid += dataRowObject.Cells[i].Value.ToString() + ',';
+                                else if (i == countColumn)
+                                    dataFromGrid += dataRowObject.Cells[i].Value.ToString();
+
+                            }
+                            //Escribe la fila al archivo
+                            csvFileWriter.WriteLine(dataFromGrid);
+                        }
+                    }
+                    csvFileWriter.Flush();
+                    csvFileWriter.Close();
+                }
+                catch (Exception exceptionObject)
+                {
+                    MessageBox.Show(exceptionObject.ToString());
+                }
             }
+        }
+
+        private void EditarAtributosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

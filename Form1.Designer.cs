@@ -41,6 +41,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.NombreConjuntoDtextBox = new System.Windows.Forms.TextBox();
             this.Pruebastext = new System.Windows.Forms.TextBox();
+            this.aributosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editarAtributosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -48,7 +50,8 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1});
+            this.toolStripMenuItem1,
+            this.aributosToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(800, 24);
@@ -147,6 +150,21 @@
             this.Pruebastext.Size = new System.Drawing.Size(131, 20);
             this.Pruebastext.TabIndex = 6;
             // 
+            // aributosToolStripMenuItem
+            // 
+            this.aributosToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.editarAtributosToolStripMenuItem});
+            this.aributosToolStripMenuItem.Name = "aributosToolStripMenuItem";
+            this.aributosToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
+            this.aributosToolStripMenuItem.Text = "Aributos";
+            // 
+            // editarAtributosToolStripMenuItem
+            // 
+            this.editarAtributosToolStripMenuItem.Name = "editarAtributosToolStripMenuItem";
+            this.editarAtributosToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.editarAtributosToolStripMenuItem.Text = "Editar atributos";
+            this.editarAtributosToolStripMenuItem.Click += new System.EventHandler(this.EditarAtributosToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -186,6 +204,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox NombreConjuntoDtextBox;
         private System.Windows.Forms.TextBox Pruebastext;
+        private System.Windows.Forms.ToolStripMenuItem aributosToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem editarAtributosToolStripMenuItem;
     }
 }
 
