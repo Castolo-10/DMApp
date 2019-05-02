@@ -331,5 +331,10 @@ namespace DMApp
                 MessageBox.Show("El archivo ha sido guardado correctamente", "Aviso");
             }
         }
+
+        private void DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }
