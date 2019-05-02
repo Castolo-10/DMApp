@@ -40,6 +40,7 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -89,6 +90,7 @@
             | System.Windows.Forms.Keys.G)));
             this.guardarComoToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
             this.guardarComoToolStripMenuItem.Text = "Guardar como";
+            this.guardarComoToolStripMenuItem.Click += new System.EventHandler(this.GuardarComoToolStripMenuItem_Click);
             // 
             // salirToolStripMenuItem
             // 
@@ -109,7 +111,6 @@
             this.editarAtributosToolStripMenuItem.Name = "editarAtributosToolStripMenuItem";
             this.editarAtributosToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.editarAtributosToolStripMenuItem.Text = "Editar atributos";
-            this.editarAtributosToolStripMenuItem.Click += new System.EventHandler(this.EditarAtributosToolStripMenuItem_Click);
             // 
             // openFileDialog1
             // 
@@ -117,6 +118,7 @@
             // 
             // dataGridView1
             // 
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.ColumnHeader;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(12, 27);
             this.dataGridView1.Name = "dataGridView1";
@@ -176,6 +178,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ToolStripMenuItem aributosToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editarAtributosToolStripMenuItem;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }
 

@@ -26,7 +26,10 @@ namespace DMApp
 
         private void CargarArchivoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
+            //Vaciamos las listas
+            atributo.Clear();
+            faltante.Clear();
+            cabecera2.Clear();
 
             openFileDialog1.Title = "Abrir archivo";
             openFileDialog1.Filter = "Archivos CSV (*.csv)|*.csv|Archivos DATA(*.data)|*.data";
@@ -36,14 +39,13 @@ namespace DMApp
             {
                 filepath = openFileDialog1.FileName;
                 DataTable dt = new DataTable();
+                dataGridView1.DataSource = null;
+                label1.Text = "Información general\n";
+                label2.Text = "Nombre del conjunto de datos\n";
                 if (filepath.Contains(".csv"))
-                {
                     dt = LeerCSV(dt);
-                }
                 else if (filepath.Contains(".data"))
-                {
                     dt = LeerDATA(dt);
-                }
                 if (dt.Rows.Count >= 0)
                     dataGridView1.DataSource = dt;
                     this.Text = "DMApp - " + Path.GetFileName(filepath);
@@ -90,10 +92,6 @@ namespace DMApp
                 int y = 0;
                 bool df = false;
                 // Leemos la info general
-                string firstLine = lines[0];
-
-                List<string> headerLabels = new List<string>();
-                label1.Text = "Información general";
 
                 foreach (string lin in File.ReadAllLines(filepath))
                 {
@@ -115,7 +113,7 @@ namespace DMApp
                     //Leer información general
                     if (lin.Substring(0, 3) == "%% ")
                     {
-                        label1.Text += '\n' + lin.Substring(3);
+                        label1.Text += lin.Substring(3)+'\n';
                     }
 
                     //Leer nombre del conjunto de datos
@@ -249,42 +247,39 @@ namespace DMApp
             }
             return true;
         }
-
         private bool SaveDATA()
         {
             try
             {
                 System.IO.StreamWriter csvFileWriter = new StreamWriter(filepath, false);
 
-                string[] rowInfo = label1.Text.Substring(20).Split('\n');
-                foreach (string strInfo in rowInfo)
-                {
-                    csvFileWriter.WriteLine("%% " + strInfo);
-                }
-
-                csvFileWriter.WriteLine("@relation " + label2.Text.Substring(29));
-
-                string columnHeaderText = "";
+                string[] rowInfo = label1.Text.Substring(19).Split('\n');
+                    foreach (string strInfo in rowInfo)
+                    {
+                        if(strInfo != "")
+                            csvFileWriter.WriteLine("%% " + strInfo);
+                    }
+                if(label2.Text.Substring(29) != "")
+                    csvFileWriter.WriteLine("@relation " + label2.Text.Substring(29));
 
                 int countColumn = dataGridView1.ColumnCount - 1;
-                //Guardamos el header en un string
-                if (countColumn >= 0)
-                {
-                    columnHeaderText = dataGridView1.Columns[0].HeaderText;
-                }
-
+                //Guardamos el header
                 for (int i = 0; i <= countColumn; i++)
                 {
-                    csvFileWriter.WriteLine("@attribute " + cabecera2[i][0] + ' ' + cabecera2[i][1]);
+                    if (cabecera2.Count != 0)
+                        csvFileWriter.WriteLine("@attribute " + cabecera2[i][0] + ' ' + cabecera2[i][1]);
+                    else
+                        csvFileWriter.WriteLine("@attribute " + dataGridView1.Columns[i].HeaderText + " unknown");
                 }
 
                 //Guardar missingvalues
                 int miss_cont = 0;
-                foreach (string miss in faltante)
-                {
-                    csvFileWriter.WriteLine("@missingValue " + faltante[miss_cont]);
-                    miss_cont++;
-                }
+                if (faltante.Count != 0)
+                    foreach (string miss in faltante)
+                    {
+                        csvFileWriter.WriteLine("@missingValue " + faltante[miss_cont]);
+                        miss_cont++;
+                    }
 
                 //Guardar los datos
                 csvFileWriter.WriteLine("@data");
@@ -317,9 +312,24 @@ namespace DMApp
             }
             return true;
         }
-        private void EditarAtributosToolStripMenuItem_Click(object sender, EventArgs e)
+        private void GuardarComoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            saveFileDialog1.Title = "Abrir archivo";
+            saveFileDialog1.Filter = "Archivos CSV (*.csv)|*.csv|Archivos DATA(*.data)|*.data";
+            saveFileDialog1.FileName = "";
+            saveFileDialog1.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\dev\\DMApp\\files";
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                filepath = saveFileDialog1.FileName;
+                label1.Text = "Información general\n";
+                label2.Text = "Nombre del conjunto de datos\n";
+                if (filepath.Contains(".csv"))
+                    SaveCSV();
+                else if (filepath.Contains(".data"))
+                    SaveDATA();
+                this.Text = "DMApp - " + Path.GetFileName(filepath);
+                MessageBox.Show("El archivo ha sido guardado correctamente", "Aviso");
+            }
         }
     }
 }
