@@ -34,15 +34,12 @@
             this.guardarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.guardarComoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.salirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.InformaciontextBox = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.NombreConjuntoDtextBox = new System.Windows.Forms.TextBox();
-            this.Pruebastext = new System.Windows.Forms.TextBox();
             this.aributosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editarAtributosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -99,6 +96,21 @@
             this.salirToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
             this.salirToolStripMenuItem.Text = "Salir";
             // 
+            // aributosToolStripMenuItem
+            // 
+            this.aributosToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.editarAtributosToolStripMenuItem});
+            this.aributosToolStripMenuItem.Name = "aributosToolStripMenuItem";
+            this.aributosToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
+            this.aributosToolStripMenuItem.Text = "Aributos";
+            // 
+            // editarAtributosToolStripMenuItem
+            // 
+            this.editarAtributosToolStripMenuItem.Name = "editarAtributosToolStripMenuItem";
+            this.editarAtributosToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.editarAtributosToolStripMenuItem.Text = "Editar atributos";
+            this.editarAtributosToolStripMenuItem.Click += new System.EventHandler(this.EditarAtributosToolStripMenuItem_Click);
+            // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
@@ -110,13 +122,6 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(563, 411);
             this.dataGridView1.TabIndex = 1;
-            // 
-            // InformaciontextBox
-            // 
-            this.InformaciontextBox.Location = new System.Drawing.Point(584, 71);
-            this.InformaciontextBox.Name = "InformaciontextBox";
-            this.InformaciontextBox.Size = new System.Drawing.Size(152, 20);
-            this.InformaciontextBox.TabIndex = 2;
             // 
             // label1
             // 
@@ -136,45 +141,13 @@
             this.label2.TabIndex = 4;
             this.label2.Text = "Nombre del conjunto de datos";
             // 
-            // NombreConjuntoDtextBox
-            // 
-            this.NombreConjuntoDtextBox.Location = new System.Drawing.Point(584, 27);
-            this.NombreConjuntoDtextBox.Name = "NombreConjuntoDtextBox";
-            this.NombreConjuntoDtextBox.Size = new System.Drawing.Size(152, 20);
-            this.NombreConjuntoDtextBox.TabIndex = 5;
-            // 
-            // Pruebastext
-            // 
-            this.Pruebastext.Location = new System.Drawing.Point(599, 214);
-            this.Pruebastext.Name = "Pruebastext";
-            this.Pruebastext.Size = new System.Drawing.Size(131, 20);
-            this.Pruebastext.TabIndex = 6;
-            // 
-            // aributosToolStripMenuItem
-            // 
-            this.aributosToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.editarAtributosToolStripMenuItem});
-            this.aributosToolStripMenuItem.Name = "aributosToolStripMenuItem";
-            this.aributosToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
-            this.aributosToolStripMenuItem.Text = "Aributos";
-            // 
-            // editarAtributosToolStripMenuItem
-            // 
-            this.editarAtributosToolStripMenuItem.Name = "editarAtributosToolStripMenuItem";
-            this.editarAtributosToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.editarAtributosToolStripMenuItem.Text = "Editar atributos";
-            this.editarAtributosToolStripMenuItem.Click += new System.EventHandler(this.EditarAtributosToolStripMenuItem_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.Pruebastext);
-            this.Controls.Add(this.NombreConjuntoDtextBox);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.InformaciontextBox);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.dataGridView1);
             this.MainMenuStrip = this.menuStrip1;
@@ -199,11 +172,8 @@
         private System.Windows.Forms.ToolStripMenuItem guardarToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem guardarComoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem salirToolStripMenuItem;
-        private System.Windows.Forms.TextBox InformaciontextBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox NombreConjuntoDtextBox;
-        private System.Windows.Forms.TextBox Pruebastext;
         private System.Windows.Forms.ToolStripMenuItem aributosToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editarAtributosToolStripMenuItem;
     }
