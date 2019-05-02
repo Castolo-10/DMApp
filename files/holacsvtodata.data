@@ -1,0 +1,8 @@
+@attribute Nombre unknown
+@attribute Apellido unknown
+@attribute sexo unknown
+@data
+Daniel,Castolo,M
+Vanessa,Cortés,F
+Julio,Morales,M
+Pablo,Barrera,M
