@@ -15,9 +15,9 @@ namespace DMApp
     {
         List<string> atributo = new List<string>();
         List<string> faltante = new List<string>();
-        //List<string> cabecera = new List<string>();
-        List<string[]> cabecera2 = new List<string[]>();
+        List<string[]> cabecera = new List<string[]>();
         string filepath;
+        int nInstancia;
 
         public Form1()
         {
@@ -29,12 +29,12 @@ namespace DMApp
             //Vaciamos las listas
             atributo.Clear();
             faltante.Clear();
-            cabecera2.Clear();
+            cabecera.Clear();
 
             openFileDialog1.Title = "Abrir archivo";
             openFileDialog1.Filter = "Archivos CSV (*.csv)|*.csv|Archivos DATA(*.data)|*.data";
             openFileDialog1.FileName = "";
-            openFileDialog1.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\dev\\DMApp\\files";
+            openFileDialog1.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 filepath = openFileDialog1.FileName;
@@ -55,13 +55,13 @@ namespace DMApp
 
         private DataTable LeerCSV(DataTable dt)
         {
+            nInstancia = 1;
             string[] lines = File.ReadAllLines(filepath);
             if (lines.Length > 0)
             {
                 // Leemos el header
-                string firstLine = lines[0];
+                string firstLine = "Instancia,"+lines[0];
                 string[] headerLabels = firstLine.Split(',');
-
                 foreach (string headerWord in headerLabels)
                 {
                     dt.Columns.Add(new DataColumn(headerWord));
@@ -70,9 +70,13 @@ namespace DMApp
                 //Leemos los datos
                 for (int r = 1; r < lines.Length; r++)
                 {
-                    string[] dataWords = lines[r].Split(',');
+                    string instance = nInstancia.ToString() + ',' + lines[r];
+                    string[] dataWords = instance.Split(',');
+                    nInstancia++;
                     DataRow dr = dt.NewRow();
                     int columnIndex = 0;
+                    dr[0] = nInstancia;
+                    
                     foreach (string headerWord in headerLabels)
                     {
                         dr[headerWord] = dataWords[columnIndex++];
@@ -90,19 +94,24 @@ namespace DMApp
             {
                 int x = 0;
                 int y = 0;
+                nInstancia = 1;
                 bool df = false;
                 // Leemos la info general
-
+                string[] copia = new string[2];
+                copia[0] = "Instancia";
+                cabecera.Add(copia);
                 foreach (string lin in File.ReadAllLines(filepath))
                 {
                     //leer los datos y situarlos en la tabla
                     if (df == true)
                     {
-                        string[] dataWords = lin.Split(',');
+                        string instance = nInstancia.ToString() + ',' + lin;
+                        nInstancia++;
+                        string[] dataWords = instance.Split(',');
                         DataRow dr = dt.NewRow();
                         int columnIndex = 0;
 
-                        foreach (string[] headerWord in cabecera2)
+                        foreach (string[] headerWord in cabecera)
                         {
                             dr[headerWord[0]] = dataWords[columnIndex++];
                         }
@@ -140,16 +149,15 @@ namespace DMApp
 
                             }
                             else
-                                i = atributo[x].Count() + 1;
+                                break;
                         }
 
 
 
-                        string[] copia = new string[2];
+                        copia = new string[2];
                         copia[0] = atributo[x].Substring(0, a);
                         copia[1] = atributo[x].Substring(a + 1);
-                        cabecera2.Add(copia);
-                        //headerLabels[x] = copia;
+                        cabecera.Add(copia);
 
                         x++;
                     }
@@ -166,7 +174,7 @@ namespace DMApp
                     {
                         df = true;
                         //falta leer cabecera con atributo list
-                        foreach (string[] headerWord in cabecera2)
+                        foreach (string[] headerWord in cabecera)
                         {
                             dt.Columns.Add(new DataColumn(headerWord[0]));
                         }
@@ -206,10 +214,10 @@ namespace DMApp
                 //Guardamos el header en un string
                 if (countColumn >= 0)
                 {
-                    columnHeaderText = dataGridView1.Columns[0].HeaderText;
+                    columnHeaderText = dataGridView1.Columns[1].HeaderText;
                 }
 
-                for (int i = 1; i <= countColumn; i++)
+                for (int i = 2; i <= countColumn; i++)
                 {
                     columnHeaderText = columnHeaderText + ',' + dataGridView1.Columns[i].HeaderText;
                 }
@@ -225,7 +233,7 @@ namespace DMApp
                         string dataFromGrid = "";
 
                         //Para cada fila genera la cadena con el formato
-                        for (int i = 0; i <= countColumn; i++)
+                        for (int i = 1; i <= countColumn; i++)
                         {
                             if (i != countColumn)
                                 dataFromGrid += dataRowObject.Cells[i].Value.ToString() + ',';
@@ -264,10 +272,10 @@ namespace DMApp
 
                 int countColumn = dataGridView1.ColumnCount - 1;
                 //Guardamos el header
-                for (int i = 0; i <= countColumn; i++)
+                for (int i = 1; i <= countColumn; i++)
                 {
-                    if (cabecera2.Count != 0)
-                        csvFileWriter.WriteLine("@attribute " + cabecera2[i][0] + ' ' + cabecera2[i][1]);
+                    if (cabecera.Count != 0)
+                        csvFileWriter.WriteLine("@attribute " + cabecera[i][0] + ' ' + cabecera[i][1]);
                     else
                         csvFileWriter.WriteLine("@attribute " + dataGridView1.Columns[i].HeaderText + " unknown");
                 }
@@ -290,7 +298,7 @@ namespace DMApp
                         string dataFromGrid = "";
 
                         //Para cada fila genera la cadena con el formato
-                        for (int i = 0; i <= countColumn; i++)
+                        for (int i = 1; i <= countColumn; i++)
                         {
                             if (i != countColumn)
                                 dataFromGrid += dataRowObject.Cells[i].Value.ToString() + ',';
