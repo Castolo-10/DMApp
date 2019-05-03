@@ -50,9 +50,9 @@ namespace DMApp
                     dataGridView1.DataSource = dt;
                     this.Text = "DMApp - " + Path.GetFileName(filepath);
                     MessageBox.Show("El archivo ha sido cargado correctamente","Aviso");
+                    //Actualizar info de labels y textbox sobre el dataset
             }
         }
-
         private DataTable LeerCSV(DataTable dt)
         {
             nInstancia = 1;
@@ -62,6 +62,7 @@ namespace DMApp
                 // Leemos el header
                 string firstLine = "Instancia,"+lines[0];
                 string[] headerLabels = firstLine.Split(',');
+                //Obtener no.atributos
                 foreach (string headerWord in headerLabels)
                 {
                     dt.Columns.Add(new DataColumn(headerWord));
@@ -79,14 +80,15 @@ namespace DMApp
                     
                     foreach (string headerWord in headerLabels)
                     {
+                        //Validar missingvalue
                         dr[headerWord] = dataWords[columnIndex++];
                     }
                     dt.Rows.Add(dr);
+                    // Aqui nInstancia vale el no. de instancias totales
                 }
             }
             return dt;
         }
-
         private DataTable LeerDATA(DataTable dt)
         {
             string[] lines = File.ReadAllLines(filepath);
@@ -97,7 +99,7 @@ namespace DMApp
                 nInstancia = 1;
                 bool df = false;
                 // Leemos la info general
-                string[] copia = new string[2];
+                string[] copia = new string[3];
                 copia[0] = "Instancia";
                 cabecera.Add(copia);
                 foreach (string lin in File.ReadAllLines(filepath))
@@ -151,12 +153,22 @@ namespace DMApp
                             else
                                 break;
                         }
-
-
-
-                        copia = new string[2];
+                        copia = new string[3];
                         copia[0] = atributo[x].Substring(0, a);
-                        copia[1] = atributo[x].Substring(a + 1);
+                        string subSatrib = atributo[x].Substring(a + 1);
+                        int b = 0;
+                        for (int i = 0; i < subSatrib.Length; i++)
+                        {
+                            if (subSatrib[i] != ' ')
+                            {
+                                b++;
+
+                            }
+                            else
+                                break;
+                        }
+                        copia[1] = subSatrib.Substring(0, b);
+                        copia[2] = subSatrib.Substring(b + 1);
                         cabecera.Add(copia);
 
                         x++;
@@ -183,12 +195,6 @@ namespace DMApp
             }
             return dt;
         }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void GuardarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             bool flag = false;
@@ -275,9 +281,9 @@ namespace DMApp
                 for (int i = 1; i <= countColumn; i++)
                 {
                     if (cabecera.Count != 0)
-                        csvFileWriter.WriteLine("@attribute " + cabecera[i][0] + ' ' + cabecera[i][1]);
+                        csvFileWriter.WriteLine("@attribute " + cabecera[i][0] + ' ' + cabecera[i][1] + ' ' + cabecera[i][2]);
                     else
-                        csvFileWriter.WriteLine("@attribute " + dataGridView1.Columns[i].HeaderText + " unknown");
+                        csvFileWriter.WriteLine("@attribute " + dataGridView1.Columns[i].HeaderText + " unknown ");
                 }
 
                 //Guardar missingvalues
@@ -338,11 +344,6 @@ namespace DMApp
                 this.Text = "DMApp - " + Path.GetFileName(filepath);
                 MessageBox.Show("El archivo ha sido guardado correctamente", "Aviso");
             }
-        }
-
-        private void DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
         }
     }
 }
