@@ -18,6 +18,8 @@ namespace DMApp
         List<string[]> cabecera = new List<string[]>();
         string filepath;
         int nInstancia;
+        int faltantes;
+
 
         public Form1()
         {
@@ -30,6 +32,7 @@ namespace DMApp
             atributo.Clear();
             faltante.Clear();
             cabecera.Clear();
+            faltantes = 0;
 
             openFileDialog1.Title = "Abrir archivo";
             openFileDialog1.Filter = "Archivos CSV (*.csv)|*.csv|Archivos DATA(*.data)|*.data";
@@ -42,6 +45,10 @@ namespace DMApp
                 dataGridView1.DataSource = null;
                 label1.Text = "Información general\n";
                 label2.Text = "Nombre del conjunto de datos\n";
+                label3.Text = "Cantidad de instancias\n";
+                label4.Text = "Cantidad de atributos\n";
+                label5.Text = "Valores faltantes\n";
+                label6.Text = "Proporción de valores faltantes\n";
                 if (filepath.Contains(".csv"))
                     dt = LeerCSV(dt);
                 else if (filepath.Contains(".data"))
@@ -81,11 +88,21 @@ namespace DMApp
                     foreach (string headerWord in headerLabels)
                     {
                         //Validar missingvalue
+                        if (dataWords[columnIndex].Equals(""))
+                        {
+                            faltantes++;
+                        }
                         dr[headerWord] = dataWords[columnIndex++];
+                        
                     }
                     dt.Rows.Add(dr);
-                    // Aqui nInstancia vale el no. de instancias totales
+                    // Aqui nInstancia vale el no. de instancias totales mas el identificador (restar 1)
+                    label3.Text = "Cantidad de instancias\n" + (nInstancia-1); 
+
                 }
+                label4.Text = "Cantidad de atributos\n" + (headerLabels.LongCount()-1);
+                label5.Text = "Valores faltantes\n" + faltantes;
+                label6.Text = "Proporción de valores faltantes\n" + ((faltantes * 100) / ( (nInstancia - 1) * (headerLabels.LongCount() - 1))) + "%";
             }
             return dt;
         }
@@ -112,14 +129,25 @@ namespace DMApp
                         string[] dataWords = instance.Split(',');
                         DataRow dr = dt.NewRow();
                         int columnIndex = 0;
+                        
 
                         foreach (string[] headerWord in cabecera)
                         {
+                            foreach (string aux in faltante)
+                            {
+                                if (dataWords[columnIndex] == aux)
+                                {
+                                    faltantes++;
+                                }
+                            }
                             dr[headerWord[0]] = dataWords[columnIndex++];
+
+                            
                         }
                         dt.Rows.Add(dr);
 
                     }
+                    label3.Text = "Cantidad de instancias\n"+ (nInstancia-1);
 
                     //Leer información general
                     if (lin.Substring(0, 3) == "%% ")
@@ -173,6 +201,7 @@ namespace DMApp
 
                         x++;
                     }
+                    label4.Text = "Cantidad de atributos\n" + (cabecera.Count()-1);
 
                     //leer valores faltantes y guardarlos en una lista de faltantes
                     if (lin.Substring(0, 5) == "@miss")
@@ -192,6 +221,9 @@ namespace DMApp
                         }
                     }
                 }
+                label5.Text = "Valores faltantes\n" + faltantes;
+                label6.Text = "Proporción de valores faltantes\n" + ((faltantes * 100) / ((nInstancia - 1) * (cabecera.LongCount() - 1))) + "%";
+
             }
             return dt;
         }
@@ -344,6 +376,11 @@ namespace DMApp
                 this.Text = "DMApp - " + Path.GetFileName(filepath);
                 MessageBox.Show("El archivo ha sido guardado correctamente", "Aviso");
             }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

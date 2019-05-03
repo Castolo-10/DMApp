@@ -38,3 +38,13 @@ E:\Mineria de datos\Proyecto\Etapa1\DMApp-master\obj\Debug\DMApp.csproj.Generate
 E:\Mineria de datos\Proyecto\Etapa1\DMApp-master\obj\Debug\DMApp.csproj.CoreCompileInputs.cache
 E:\Mineria de datos\Proyecto\Etapa1\DMApp-master\obj\Debug\DMApp.exe
 E:\Mineria de datos\Proyecto\Etapa1\DMApp-master\obj\Debug\DMApp.pdb
+E:\Mineria de datos\Proyecto\Etapa1\DMApp\bin\Debug\DMApp.exe.config
+E:\Mineria de datos\Proyecto\Etapa1\DMApp\bin\Debug\DMApp.exe
+E:\Mineria de datos\Proyecto\Etapa1\DMApp\bin\Debug\DMApp.pdb
+E:\Mineria de datos\Proyecto\Etapa1\DMApp\obj\Debug\DMApp.csprojAssemblyReference.cache
+E:\Mineria de datos\Proyecto\Etapa1\DMApp\obj\Debug\DMApp.Form1.resources
+E:\Mineria de datos\Proyecto\Etapa1\DMApp\obj\Debug\DMApp.Properties.Resources.resources
+E:\Mineria de datos\Proyecto\Etapa1\DMApp\obj\Debug\DMApp.csproj.GenerateResource.cache
+E:\Mineria de datos\Proyecto\Etapa1\DMApp\obj\Debug\DMApp.csproj.CoreCompileInputs.cache
+E:\Mineria de datos\Proyecto\Etapa1\DMApp\obj\Debug\DMApp.exe
+E:\Mineria de datos\Proyecto\Etapa1\DMApp\obj\Debug\DMApp.pdb
