@@ -48,3 +48,4 @@ E:\Mineria de datos\Proyecto\Etapa1\DMApp\obj\Debug\DMApp.csproj.GenerateResourc
 E:\Mineria de datos\Proyecto\Etapa1\DMApp\obj\Debug\DMApp.csproj.CoreCompileInputs.cache
 E:\Mineria de datos\Proyecto\Etapa1\DMApp\obj\Debug\DMApp.exe
 E:\Mineria de datos\Proyecto\Etapa1\DMApp\obj\Debug\DMApp.pdb
+E:\Mineria de datos\Proyecto\Etapa1\DMApp\obj\Debug\DMApp.AtributosForm.resources

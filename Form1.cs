@@ -33,6 +33,7 @@ namespace DMApp
             faltante.Clear();
             cabecera.Clear();
             faltantes = 0;
+            atributoscomboBox.Items.Clear();
 
             openFileDialog1.Title = "Abrir archivo";
             openFileDialog1.Filter = "Archivos CSV (*.csv)|*.csv|Archivos DATA(*.data)|*.data";
@@ -73,6 +74,11 @@ namespace DMApp
                 foreach (string headerWord in headerLabels)
                 {
                     dt.Columns.Add(new DataColumn(headerWord));
+                    atributo.Add(headerWord);
+
+                    if(headerWord != "Instancia")
+                    atributoscomboBox.Items.Add(headerWord);
+
                 }
 
                 //Leemos los datos
@@ -91,6 +97,7 @@ namespace DMApp
                         if (dataWords[columnIndex].Equals(""))
                         {
                             faltantes++;
+                            
                         }
                         dr[headerWord] = dataWords[columnIndex++];
                         
@@ -218,11 +225,13 @@ namespace DMApp
                         foreach (string[] headerWord in cabecera)
                         {
                             dt.Columns.Add(new DataColumn(headerWord[0]));
+                            if(headerWord[0] != "Instancia")
+                                atributoscomboBox.Items.Add(headerWord[0]);
                         }
                     }
                 }
                 label5.Text = "Valores faltantes\n" + faltantes;
-                label6.Text = "Proporción de valores faltantes\n" + ((faltantes * 100) / ((nInstancia - 1) * (cabecera.LongCount() - 1))) + "%";
+                label6.Text = "Proporción de valores faltantes\n" + ((faltantes * 100) / ((nInstancia - 1) * (cabecera.Count() - 1))) + "%";
 
             }
             return dt;
@@ -382,5 +391,140 @@ namespace DMApp
         {
 
         }
+
+        private void EditarAtributosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void AtributoscomboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string seleccion;
+            seleccion= Convert.ToString(atributoscomboBox.SelectedItem);
+            string viejo= " ";
+            string nuevo = " ";
+            
+            
+            string copia;
+            if (seleccion != " ")
+            {
+                int o = 0;
+
+                /*Comparación de atributo seleccionado con la lista de atributos
+                previamente tuve que hacer que los csv tambien tuvieran una lista 
+                de atributos, en ellos cada elemento solamente tiene el nombre del atributo
+                La comparación toma el nombre del atributo y lo compara cada elemento de la
+                lista de atributos hasta el primer espacio (para que compare con csv y data)
+                   
+                    */
+                o = 0;
+                foreach(string seleccionado in atributo)
+                {
+                    //encuentra el nombre
+                    int a = 0;
+                    for (int i = 0; i < seleccionado.Length; i++)
+                    {
+                        if (seleccionado[i] != ' ')
+                        {
+                            a++;
+
+                        }
+                        else
+                            break;
+                    }
+                    
+                    //lo compara con el seleccionado
+                    copia = seleccionado.Substring(0,a);
+                    if(copia == seleccion)
+                    {
+                        viejo = seleccionado;
+                        AtributosForm frm = new AtributosForm(seleccionado);
+                        if (frm.ShowDialog() == DialogResult.OK)
+                        {                            
+                            nuevo = frm.atributo;
+                        }
+                        //"nuevo" corresponde a el nuevo atributo modificado en el form de atributos
+                        
+                        break;
+                       
+                    }
+                    //o es usado para contar en que lugar se encuetra ese atributo
+                    o++;
+                }
+
+                
+                //Guardar modificación del atributo
+              atributo[o] = nuevo;
+                        
+                //prueba de almacenamiento de cambios
+                label8.Text = atributo[o].ToString();
+
+                
+            }
+            //actualizacabecera();
+        }
+
+        private void DataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+
+            if(this.dataGridView1.Columns[e.ColumnIndex].Name == "Nombre")
+                if(Convert.ToString(e.Value) == "")
+                {
+                    e.CellStyle.ForeColor = Color.Red;
+                    e.CellStyle.BackColor = Color.Red;
+                }
+
+        }
+
+        /*
+        public void actualizacabecera(DataTable dt)
+        {
+            string[] copia = new string[4];
+            copia[0] = "Instancia";
+            
+            // cabecera.Add(copia);
+            int elementos = atributo.Count;
+
+            for (int x=0; x<elementos; x++)
+            {
+                int a = 0;
+                for (int i = 0; i < atributo[x].Length; i++)
+                {
+                    if (atributo[x][i] != ' ')
+                    {
+                        a++;
+
+                    }
+                    else
+                        break;
+                }
+                copia = new string[3];
+                copia[0] = atributo[x].Substring(0, a);
+                string subSatrib = atributo[x].Substring(a + 1);
+                int b = 0;
+                for (int i = 0; i < subSatrib.Length; i++)
+                {
+                    if (subSatrib[i] != ' ')
+                    {
+                        b++;
+
+                    }
+                    else
+                        break;
+                }
+                copia[1] = subSatrib.Substring(0, b);
+                copia[2] = subSatrib.Substring(b + 1);
+
+                cabecera.Add(copia);
+
+                x++;
+            }
+            foreach (string[] headerWord in cabecera)
+            {
+                dt.Columns.Add(new DataColumn(headerWord[0]));
+                if (headerWord[0] != "Instancia")
+                    atributoscomboBox.Items.Add(headerWord[0]);
+            }
+        }*/
     }
 }
