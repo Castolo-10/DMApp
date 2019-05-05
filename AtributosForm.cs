@@ -20,15 +20,26 @@ namespace DMApp
         string tipo;
         string er;
         bool disponible = false;
+        public bool modificado  { get; set; }
+
+        string at;
+        string ti;
+        string err;
+        
         
 
-        public AtributosForm( string atr, DataGridView data, int indexCB)
+        public AtributosForm( string atr, DataGridView data, int indexCB, bool mod)
         {
             dgv = data;
             index = indexCB;
             index2 = 0;
             InitializeComponent();
             atributo = atr;
+            modificado = false;
+            modificado = mod;
+
+
+
         }
 
         
@@ -49,6 +60,9 @@ namespace DMApp
             
             nombre = atributo.Substring(0, a);
 
+            at=nombre;
+            
+
             string subSatrib = atributo.Substring(a);
             int b = 0;
             for (int i = 1; i < subSatrib.Length; i++)
@@ -66,10 +80,15 @@ namespace DMApp
             tipo = subSatrib.Substring(1, b);
             //er = subSatrib.Substring(b);
 
+            ti=tipo;
+            
+
             string subSatrib2 = subSatrib.Substring(b);
 
             if (disponible == true)
                 er = subSatrib2.Substring(2);
+
+            err = er;
 
             nombretextBox.Text = nombre;
             tipotextBox.Text = tipo;
@@ -78,6 +97,7 @@ namespace DMApp
 
         private void NombretextBox_TextChanged(object sender, EventArgs e)
         {
+            
             if (nombretextBox.Text == "")
                 salvarbutton.Enabled = false;
             else
@@ -86,6 +106,8 @@ namespace DMApp
 
         private void Salvarbutton_Click(object sender, EventArgs e)
         {
+            detectarcambios();
+
             if (nombretextBox.Text != "")
                 nombre = nombretextBox.Text;
             else
@@ -94,12 +116,12 @@ namespace DMApp
             if (tipotextBox.Text != "")
                 tipo = tipotextBox.Text;
             else
-                tipo = " ";
+                tipo = "/";
 
             if (ertextBox.Text != "")
                 er = ertextBox.Text;
             else
-                er = " ";
+                er = "/";
                       
             nombre = nombre.Replace(' ', '_');
 
@@ -119,12 +141,22 @@ namespace DMApp
                 if (dgv.Columns[i].Index == index+1)
                 {
                     dgv.Columns.RemoveAt(index+1);
+                    modificado = true;
                     index2 = index+1;
                     break;
                 }
             }
+            
             this.DialogResult = DialogResult.No;
             this.Close();
+        }
+
+        private void detectarcambios()
+        {
+            if(nombretextBox.Text != at || tipotextBox.Text != ti || ertextBox.Text != err)
+            {
+                modificado = true;
+            }
         }
     }
 }
