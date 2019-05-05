@@ -20,7 +20,8 @@ namespace DMApp
         int nInstancia;
         int faltantes;
         public int indexCB = 0;
-
+        bool modificaciones = false;
+        int sal = 0;
 
         public Form1()
         {
@@ -68,6 +69,7 @@ namespace DMApp
         }
         private DataTable LeerCSV(DataTable dt)
         {
+            
             nInstancia = 1;
             string[] lines = File.ReadAllLines(filepath);
             if (lines.Length > 0)
@@ -79,15 +81,21 @@ namespace DMApp
                 cabecera.Add(copia);
                 string[] headerLabels = firstLine.Split(',');
                 //Obtener no.atributos
+
+
+
+
                 foreach (string headerWord in headerLabels)
                 {
+                    
                     dt.Columns.Add(new DataColumn(headerWord));
-                    atributo.Add(headerWord);
+                    atributo.Add(headerWord + " " + "/" + " " + "/");
                     copia[0] = headerWord;
                     copia[1] = copia[2] = "";
                     cabecera.Add(copia);
                     if(headerWord != "Instancia")
                     atributoscomboBox.Items.Add(headerWord);
+
 
                 }
 
@@ -244,7 +252,7 @@ namespace DMApp
             }
             return dt;
         }
-        private void GuardarToolStripMenuItem_Click(object sender, EventArgs e)
+        public void GuardarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             bool flag = false;
             if (filepath.Contains(".csv")) {
@@ -414,6 +422,7 @@ namespace DMApp
             string old = "";
             
             
+            
             string copia;
             if (seleccion != " ")
             {
@@ -448,17 +457,20 @@ namespace DMApp
                     {
                         old = copia;
                         DataGridView dgv = dataGridView1;
-                        AtributosForm frm = new AtributosForm(seleccionado,dgv,indexCB);
+                        AtributosForm frm = new AtributosForm(seleccionado,dgv,indexCB,modificaciones);
                         if (frm.ShowDialog() == DialogResult.OK)
                         {
                             nuevo = frm.atributo;
+                            modificaciones = frm.modificado;
                         }
                         else
                         {
+                            modificaciones = frm.modificado; ;
                             dataGridView1 = frm.dgv;
                             indexCB = frm.index;
                             cabecera.RemoveAt(frm.index2);
                             atributoscomboBox.Items.RemoveAt(frm.index);
+                            
                             return;
                         }
                         //"nuevo" corresponde a el nuevo atributo modificado en el form de atributos
@@ -477,6 +489,7 @@ namespace DMApp
                 cabecera[o + 1][0] = spliter[0];
                 cabecera[o + 1][1] = spliter[1];
                 cabecera[o + 1][2] = atributo[o].Substring((spliter[0].Length + spliter[1].Length) + 2);
+                
                         
                 //prueba de almacenamiento de cambios
                 label8.Text = cabecera[o+1][0] + ' ' + cabecera[o+1][1] + ' ' + cabecera[o+1][2];
@@ -490,7 +503,7 @@ namespace DMApp
         }
         private void Update_Grid_Header(string oldname, string newname)
         {
-            for(int i = 1;i < dataGridView1.ColumnCount; i++)
+            for(int i = 0;i < dataGridView1.ColumnCount; i++)
             {
                 if (dataGridView1.Columns[i].HeaderText == oldname)
                 {
@@ -522,6 +535,41 @@ namespace DMApp
                     break;
                 }
             }
+        }
+
+        private void MenuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void SalirToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (modificaciones == true)
+            {
+                SalirForm frm = new SalirForm();
+                if (frm.ShowDialog() == DialogResult.OK)
+
+                {
+                    sal=frm.salir;
+                }
+
+                if (sal == 0)
+                    this.Close();
+                else if (sal == 1)
+                {
+                    GuardarToolStripMenuItem_Click(sender,e);
+                    this.Close();
+                    
+                }
+                else if (sal ==2)
+                {
+
+                    GuardarComoToolStripMenuItem_Click(sender, e);
+                    this.Close();                    
+                }
+            }
+            else
+                this.Close();
         }
     }
 }
