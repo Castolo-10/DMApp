@@ -13,14 +13,20 @@ namespace DMApp
      public partial class AtributosForm : Form
     {
         public string atributo { get; set; }
+        public DataGridView dgv { get; set; }
+        public int index2 { get; set; }
+        public int index { get; set; }
         string nombre;
         string tipo;
         string er;
         bool disponible = false;
         
 
-        public AtributosForm( string atr)
+        public AtributosForm( string atr, DataGridView data, int indexCB)
         {
+            dgv = data;
+            index = indexCB;
+            index2 = 0;
             InitializeComponent();
             atributo = atr;
         }
@@ -29,9 +35,6 @@ namespace DMApp
 
         private void AtributosForm_Load(object sender, EventArgs e)
         {
-            
-
-
             int a = 0;
             for (int i = 0; i < atributo.Length; i++)
             {
@@ -71,10 +74,6 @@ namespace DMApp
             nombretextBox.Text = nombre;
             tipotextBox.Text = tipo;
             ertextBox.Text = er;
-
-
-
-
         }
 
         private void NombretextBox_TextChanged(object sender, EventArgs e)
@@ -110,6 +109,22 @@ namespace DMApp
             this.Close();
 
             // this.Close();
+        }
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            
+            for (int i = 1; i < dgv.ColumnCount; i++)
+            {
+                if (dgv.Columns[i].Index == index+1)
+                {
+                    dgv.Columns.RemoveAt(index+1);
+                    index2 = index+1;
+                    break;
+                }
+            }
+            this.DialogResult = DialogResult.No;
+            this.Close();
         }
     }
 }
