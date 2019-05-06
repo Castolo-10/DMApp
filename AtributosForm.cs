@@ -37,9 +37,6 @@ namespace DMApp
             atributo = atr;
             modificado = false;
             modificado = mod;
-
-
-
         }
 
         
@@ -82,7 +79,6 @@ namespace DMApp
 
             ti=tipo;
             
-
             string subSatrib2 = subSatrib.Substring(b);
 
             if (disponible == true)
@@ -116,12 +112,12 @@ namespace DMApp
             if (tipotextBox.Text != "")
                 tipo = tipotextBox.Text;
             else
-                tipo = "/";
+                tipo = ".";
 
             if (ertextBox.Text != "")
                 er = ertextBox.Text;
             else
-                er = "/";
+                er = ".";
                       
             nombre = nombre.Replace(' ', '_');
 

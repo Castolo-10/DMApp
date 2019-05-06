@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace DMApp
 {
@@ -61,10 +62,17 @@ namespace DMApp
                 else if (filepath.Contains(".data"))
                     dt = LeerDATA(dt);
                 if (dt.Rows.Count >= 0)
+                {
                     dataGridView1.DataSource = dt;
+                    if (filepath.Contains(".data"))
+                    {
+                        //EvalRegex();
+                        //label8.Text = pruebaRegx.ToString();
+                    }
                     this.Text = "DMApp - " + Path.GetFileName(filepath);
-                    MessageBox.Show("El archivo ha sido cargado correctamente","Aviso");
+                    MessageBox.Show("El archivo ha sido cargado correctamente", "Aviso");
                     //Actualizar info de labels y textbox sobre el dataset
+                }
             }
         }
         private DataTable LeerCSV(DataTable dt)
@@ -89,9 +97,9 @@ namespace DMApp
                 {
                     
                     dt.Columns.Add(new DataColumn(headerWord));
-                    atributo.Add(headerWord + " " + "/" + " " + "/");
+                    atributo.Add(headerWord + " " + "." + " " + ".");
                     copia[0] = headerWord;
-                    copia[1] = copia[2] = "";
+                    copia[1] = copia[2] = ".";
                     cabecera.Add(copia);
                     if(headerWord != "Instancia")
                     atributoscomboBox.Items.Add(headerWord);
@@ -402,17 +410,14 @@ namespace DMApp
                 MessageBox.Show("El archivo ha sido guardado correctamente", "Aviso");
             }
         }
-
         private void Form1_Load(object sender, EventArgs e)
         {
 
         }
-
         private void EditarAtributosToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
-
         private void AtributoscomboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             string seleccion;
@@ -515,15 +520,41 @@ namespace DMApp
         private void DataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
 
-            if(this.dataGridView1.Columns[e.ColumnIndex].Name == "Nombre")
-                if(Convert.ToString(e.Value) == "")
+            //if(this.dataGridView1.Columns[e.ColumnIndex].Name == "Nombre")
+            /*if(Convert.ToString(e.Value) == "")
+            {
+                e.CellStyle.ForeColor = Color.Red;
+                e.CellStyle.BackColor = Color.Red;
+            }*/
+            // i  columna, j fila
+            /*if (filepath.Contains(".data"))
+            {
+                //DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+                if(this.dataGridView1.Columns[e.ColumnIndex].Name == cabecera[e.ColumnIndex][0] && e.ColumnIndex != 0)
                 {
-                    e.CellStyle.ForeColor = Color.Red;
-                    e.CellStyle.BackColor = Color.Red;
+                    Regex rgx = new Regex(cabecera[e.ColumnIndex][2]);
+                    if (!rgx.IsMatch(Convert.ToString(e.Value)))
+                        pruebaRegx++;
                 }
-
+            }*/
+            Regex rgx;
+            int pruebaRegx = 0;
+            DataGridViewRow actualRow;
+            if (this.dataGridView1.Columns[e.ColumnIndex].Name == cabecera[e.ColumnIndex][0] && e.ColumnIndex != 0)
+            {
+                rgx = new Regex(cabecera[e.ColumnIndex][2]);
+                actualRow = dataGridView1.Rows[e.RowIndex];
+                if (!actualRow.IsNewRow)
+                {
+                    if (!rgx.IsMatch(actualRow.Cells[e.ColumnIndex].Value.ToString()))
+                    {
+                        pruebaRegx++;
+                        e.CellStyle.BackColor = Color.Red;
+                    }
+                }
+                label8.Text = pruebaRegx.ToString();
+            }
         }
-
         public void Delete_Atributo()
         {
             for (int i = 1; i < dataGridView1.ColumnCount; i++)
@@ -536,12 +567,10 @@ namespace DMApp
                 }
             }
         }
-
         private void MenuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
 
         }
-
         private void SalirToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (modificaciones == true)
@@ -570,6 +599,32 @@ namespace DMApp
             }
             else
                 this.Close();
+        }
+        
+        private void EvalRegex(DataGridViewCellFormattingEventArgs e)
+        {
+            Regex rgx;
+            int pruebaRegx = 0;
+            DataGridViewRow actualRow;
+            for (int i = 1; i < cabecera.Count; i++)
+            {
+                rgx = new Regex(cabecera[i][2]);
+                for (int j = 0; j<dataGridView1.Rows.Count; j++)
+                {
+                    actualRow = dataGridView1.Rows[j];
+                    if (!actualRow.IsNewRow)
+                    {
+                        if (!rgx.IsMatch(actualRow.Cells[i].Value.ToString()))
+                        {
+                            pruebaRegx++;
+                            e.CellStyle.ForeColor = Color.Red;
+                            e.CellStyle.BackColor = Color.Red;
+                        }
+                    }
+                }
+
+            }
+            label8.Text = pruebaRegx.ToString();
         }
     }
 }
