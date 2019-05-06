@@ -23,6 +23,9 @@ namespace DMApp
         public int indexCB = 0;
         bool modificaciones = false;
         int sal = 0;
+        string celdaString= "";
+        bool editando = false;
+
 
         public Form1()
         {
@@ -34,29 +37,52 @@ namespace DMApp
         private void CargarArchivoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //Vaciamos las listas
-            atributo.Clear();
-            faltante.Clear();
-            cabecera.Clear();
-            faltantes = 0;
-            atributoscomboBox.Items.Clear();
+            if (modificaciones)
+            {
+                SalirForm frm = new SalirForm();
+                if (frm.ShowDialog() == DialogResult.OK)
 
+                {
+                    sal = frm.salir;
+                }
+
+                if (sal == 0)
+                    this.Close();
+                else if (sal == 1)
+                {
+                    GuardarToolStripMenuItem_Click(sender, e);
+                    this.Close();
+
+                }
+                else if (sal == 2)
+                {
+
+                    GuardarComoToolStripMenuItem_Click(sender, e);
+                    this.Close();
+                }
+            }
             openFileDialog1.Title = "Abrir archivo";
             openFileDialog1.Filter = "Archivos CSV (*.csv)|*.csv|Archivos DATA(*.data)|*.data";
             openFileDialog1.FileName = "";
-            openFileDialog1.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\dev\\DMApp\\files";
+            openFileDialog1.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
+                dataGridView1.DataSource = null;
+                atributo.Clear();
+                faltante.Clear();
+                cabecera.Clear();
+                faltantes = 0;
+                atributoscomboBox.Items.Clear();
+
                 guardarToolStripMenuItem.Enabled = true;
                 guardarComoToolStripMenuItem.Enabled = true;
                 filepath = openFileDialog1.FileName;
                 DataTable dt = new DataTable();
-                dataGridView1.DataSource = null;
-                label1.Text = "Información general\n";
-                label2.Text = "Nombre del conjunto de datos\n";
                 label3.Text = "Cantidad de instancias\n";
                 label4.Text = "Cantidad de atributos\n";
                 label5.Text = "Valores faltantes\n";
                 label6.Text = "Proporción de valores faltantes\n";
+                textBox1.Text = textBox2.Text = "";
                 if (filepath.Contains(".csv"))
                     dt = LeerCSV(dt);
                 else if (filepath.Contains(".data"))
@@ -164,6 +190,7 @@ namespace DMApp
 
                         foreach (string[] headerWord in cabecera)
                         {
+                            /**/
                             foreach (string aux in faltante)
                             {
                                 if (dataWords[columnIndex] == aux)
@@ -181,13 +208,13 @@ namespace DMApp
                     //Leer información general
                     if (lin.Substring(0, 3) == "%% ")
                     {
-                        label1.Text += lin.Substring(3)+'\n';
+                        textBox2.Text += lin.Substring(3)+'\n';
                     }
 
                     //Leer nombre del conjunto de datos
                     if (lin.Substring(0, 5) == "@rela")
                     {
-                        label2.Text = "Nombre del conjunto de datos\n" + lin.Substring(10);
+                        textBox1.Text = lin.Substring(10);
                     }
 
                     //Leer atributos, y guardarlos en una lista de strings (toda la
@@ -268,8 +295,11 @@ namespace DMApp
             {
                 flag = SaveDATA();
             }
-            if(flag)
+            if (flag)
+            {
                 MessageBox.Show("El archivo ha sido guardado correctamente", "Aviso");
+                modificaciones = false;
+            }
         }
         private bool SaveCSV()
         {
@@ -330,14 +360,14 @@ namespace DMApp
             {
                 System.IO.StreamWriter csvFileWriter = new StreamWriter(filepath, false);
 
-                string[] rowInfo = label1.Text.Substring(19).Split('\n');
+                string[] rowInfo = textBox2.Text.Split('\n');
                     foreach (string strInfo in rowInfo)
                     {
                         if(strInfo != "")
                             csvFileWriter.WriteLine("%% " + strInfo);
                     }
-                if(label2.Text.Substring(29) != "")
-                    csvFileWriter.WriteLine("@relation " + label2.Text.Substring(29));
+                if(textBox1.Text != "")
+                    csvFileWriter.WriteLine("@relation " + textBox1.Text);
 
                 int countColumn = dataGridView1.ColumnCount - 1;
                 //Guardamos el header
@@ -351,7 +381,7 @@ namespace DMApp
 
                 //Guardar missingvalues
                 int miss_cont = 0;
-                if (faltante.Count != 0)
+                if (faltante.Count > 0)
                     foreach (string miss in faltante)
                     {
                         csvFileWriter.WriteLine("@missingValue " + faltante[miss_cont]);
@@ -391,6 +421,7 @@ namespace DMApp
         }
         private void GuardarComoToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            bool flag = false;
             saveFileDialog1.Title = "Abrir archivo";
             saveFileDialog1.Filter = "Archivos CSV (*.csv)|*.csv|Archivos DATA(*.data)|*.data";
             saveFileDialog1.FileName = "";
@@ -401,11 +432,14 @@ namespace DMApp
                 label1.Text = "Información general\n";
                 label2.Text = "Nombre del conjunto de datos\n";
                 if (filepath.Contains(".csv"))
-                    SaveCSV();
+                    flag = SaveCSV();
                 else if (filepath.Contains(".data"))
-                    SaveDATA();
-                this.Text = "DMApp - " + Path.GetFileName(filepath);
-                MessageBox.Show("El archivo ha sido guardado correctamente", "Aviso");
+                    flag = SaveDATA();
+                if (flag)
+                {
+                    this.Text = "DMApp - " + Path.GetFileName(filepath);
+                    MessageBox.Show("El archivo ha sido guardado correctamente", "Aviso");
+                }
             }
         }
         private void Form1_Load(object sender, EventArgs e)
@@ -423,8 +457,6 @@ namespace DMApp
             indexCB = atributoscomboBox.SelectedIndex;
             string nuevo = " ";
             string old = "";
-            
-            
             
             string copia;
             if (seleccion != " ")
@@ -460,7 +492,7 @@ namespace DMApp
                     {
                         old = copia;
                         DataGridView dgv = dataGridView1;
-                        AtributosForm frm = new AtributosForm(seleccionado,dgv,indexCB,modificaciones);
+                        AtributosForm frm = new AtributosForm(seleccionado,dgv,indexCB,modificaciones, false);
                         if (frm.ShowDialog() == DialogResult.OK)
                         {
                             nuevo = frm.atributo;
@@ -472,10 +504,11 @@ namespace DMApp
                         }
                         else
                         {
-                            modificaciones = frm.modificado; ;
+                            modificaciones = frm.modificado;
                             dataGridView1 = frm.dgv;
                             indexCB = frm.index;
                             cabecera.RemoveAt(frm.index2);
+                            atributo.RemoveAt(frm.index2-1);
                             atributoscomboBox.Items.RemoveAt(frm.index);
                             
                             return;
@@ -491,17 +524,16 @@ namespace DMApp
                     //Guardar modificación del atributo
                     atributo[o] = nuevo;
                     string[] spliter = atributo[o].Split(' ');
-                    cabecera[o][0] = spliter[0];
-                    cabecera[o][1] = spliter[1];
-                    cabecera[o][2] = atributo[o].Substring((spliter[0].Length + spliter[1].Length) + 2);
+                    cabecera[o+1][0] = spliter[0];
+                    cabecera[o+1][1] = spliter[1];
+                    cabecera[o+1][2] = atributo[o].Substring((spliter[0].Length + spliter[1].Length) + 2);
 
 
                     //prueba de almacenamiento de cambios
-                    label8.Text = cabecera[o][0] + ' ' + cabecera[o][1] + ' ' + cabecera[o][2];
                     atributoscomboBox.Items.RemoveAt(indexCB);
-                    atributoscomboBox.Items.Insert(indexCB, cabecera[o][0]);
+                    atributoscomboBox.Items.Insert(indexCB, cabecera[o+1][0]);
 
-                    Update_Grid_Header(old, cabecera[o][0]);
+                    Update_Grid_Header(old, cabecera[o+1][0]);
                     // Aqui la funcion esta hecha pero falta ver como llamarla en el mismo form del edit, aunque no jale nada
                     //delete_atributo(1);
                 }
@@ -522,34 +554,38 @@ namespace DMApp
         }
         private void DataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-
-            //if(this.dataGridView1.Columns[e.ColumnIndex].Name == "Nombre")
-            /*if(Convert.ToString(e.Value) == "")
+            if (!editando)
             {
-                e.CellStyle.ForeColor = Color.Red;
-                e.CellStyle.BackColor = Color.Red;
-            }*/
-            
-            Regex rgx;
-            int pruebaRegx = 0;
-            DataGridViewRow actualRow;
-            if (this.dataGridView1.Columns[e.ColumnIndex].Name == cabecera[e.ColumnIndex][0] && e.ColumnIndex != 0)
-            {
-                rgx = new Regex(cabecera[e.ColumnIndex][2]);
-                actualRow = dataGridView1.Rows[e.RowIndex];
-                if (!actualRow.IsNewRow)
+                Regex rgx;
+                DataGridViewRow actualRow;
+                if (this.dataGridView1.Columns[e.ColumnIndex].Name == cabecera[e.ColumnIndex][0] && e.ColumnIndex != 0)
                 {
-                    if (!rgx.IsMatch(actualRow.Cells[e.ColumnIndex].Value.ToString()))
+                    rgx = new Regex(cabecera[e.ColumnIndex][2]);
+                    actualRow = dataGridView1.Rows[e.RowIndex];
+                    
+                    if (!actualRow.IsNewRow)
                     {
-                        pruebaRegx++;
-                        e.CellStyle.BackColor = Color.Red;
-                    }
-                    else
-                    {
-                        e.CellStyle.BackColor = Color.White;
+                        if (!rgx.IsMatch(actualRow.Cells[e.ColumnIndex].Value.ToString()))
+                        {
+                            e.CellStyle.BackColor = Color.Red;
+                        }
+                        else
+                        {
+                            e.CellStyle.BackColor = Color.White;
+                        }
+                        if (filepath.Contains(".data"))
+                        {
+                            foreach(string aux in faltante)
+                            {
+                                if(actualRow.Cells[e.ColumnIndex].Value.ToString() == aux)
+                                {
+                                    e.CellStyle.BackColor = Color.Red;
+                                    actualRow.Cells[e.ColumnIndex].Style.BackColor = Color.Red;
+                                }
+                            }
+                        }
                     }
                 }
-                label8.Text = pruebaRegx.ToString();
             }
         }
         public void Delete_Atributo()
@@ -560,6 +596,7 @@ namespace DMApp
                 {
                     dataGridView1.Columns.RemoveAt(indexCB);
                     cabecera.RemoveAt(i);
+                    atributo.RemoveAt(i - 1);
                     break;
                 }
             }
@@ -600,12 +637,11 @@ namespace DMApp
         private void EvalRegex()
         {
             Regex rgx;
-            int pruebaRegx = 0;
             DataGridViewRow actualRow;
             for (int i = 1; i < cabecera.Count; i++)
             {
                 rgx = new Regex(cabecera[i][2]);
-                for (int j = 0; j<dataGridView1.Rows.Count; j++)
+                for (int j = 0; j<dataGridView1.Rows.Count - 1; j++)
                 {
                     actualRow = dataGridView1.Rows[j];
                     if (!actualRow.IsNewRow)
@@ -613,28 +649,152 @@ namespace DMApp
                         if (!rgx.IsMatch(actualRow.Cells[i].Value.ToString()))
                         {
                             actualRow.Cells[i].Style.BackColor = Color.Red;
-                            pruebaRegx++;
-                            
                         }
-                        else
+                        if (filepath.Contains(".data"))
                         {
-                            actualRow.Cells[i].Style.BackColor = Color.White;
+                            foreach (string aux in faltante)
+                            {
+                                if (actualRow.Cells[i].Value.ToString() == "?")
+                                {
+                                    //actualRow.Cells[i].Style.BackColor = Color.Red;
+                                }
+                                else
+                                {
+                                    //actualRow.Cells[i].Style.BackColor = Color.White;
+                                }
+                            }
                         }
                     }
                 }
 
             }
-            label8.Text = pruebaRegx.ToString();
         }
-
-        private void DataGridView1_CellLeave(object sender, DataGridViewCellEventArgs e)
+        private void DataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            if (Convert.ToString(e.RowIndex) == "")
+            DataGridViewRow actualRow2;
+            if (e.RowIndex != -1)
             {
-                faltantes++;
+                modificaciones = true;
+                actualRow2 = dataGridView1.Rows[e.RowIndex];
+                if (filepath.Contains(".data"))
+                {
+                    foreach(string aux in faltante)
+                    {
+                        if (actualRow2.Cells[e.ColumnIndex].Value.ToString() == aux)
+                        {
+                            faltantes++;
+                            //actualRow2.Cells[e.ColumnIndex].Style.BackColor = Color.Red;
+                        }
+                        else if (celdaString == aux && actualRow2.Cells[e.ColumnIndex].Value.ToString() != aux)
+                        {
+                                faltantes--;
+                                //actualRow2.Cells[e.ColumnIndex].Style.BackColor = Color.White;
+                        }
+                    }
+                }
+                else
+                {
+                    if (actualRow2.Cells[e.ColumnIndex].Value.ToString() == "")
+                    {
+                        faltantes++;
+                    }
+                    else
+                    {
+                        if (celdaString.Length == 0 && actualRow2.Cells[e.ColumnIndex].Value.ToString().Length > 0)
+                            faltantes--;
+                    }
+                }
+                label5.Text = "Valores faltantes\n" + faltantes;
+                label6.Text = "Proporción de valores faltantes\n" + ((faltantes * 100) / ((nInstancia - 1) * (cabecera.Count - 1))) + "%";
             }
-            label5.Text = "Valores faltantes\n" + faltantes;
-            label6.Text = "Proporción de valores faltantes\n" + ((faltantes * 100) / ((nInstancia - 1) * (cabecera.Count - 1))) + "%";
+        }
+        private void DataGridView1_CellStateChanged(object sender, DataGridViewCellStateChangedEventArgs e)
+        {
+            celdaString = Convert.ToString(e.Cell.Value);
+        }
+        private void TextBox1_TextChanged(object sender, EventArgs e)
+        {
+            modificaciones = true;
+        }
+        private void TextBox2_TextChanged(object sender, EventArgs e)
+        {
+            modificaciones = true;
+        }
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            DataGridView dgv = new DataGridView();
+            AtributosForm frm = new AtributosForm("", dgv, -1, modificaciones, true);
+
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                editando = true;
+                //Guardar modificación del atributo
+                atributo.Add(frm.atributo);
+                string[] spliter = atributo[atributo.Count-1].Split(' ');
+                string[] newcabecera = new string[3];
+                newcabecera[0] = spliter[0];
+                newcabecera[1] = spliter[1];
+                newcabecera[2] = atributo[atributo.Count - 1].Substring((spliter[0].Length + spliter[1].Length) + 2);
+                cabecera.Add(newcabecera);
+                modificaciones = frm.modificado;
+
+                //prueba de almacenamiento de cambios
+                atributoscomboBox.Items.Add(newcabecera[0]);
+                //this.dataGridView1.Columns.Add(newcabecera[0], newcabecera[0]);
+                DataTable dt = new DataTable();
+
+                for (int i = 0; i < cabecera.Count; i++)
+                {
+                    dt.Columns.Add(new DataColumn(cabecera[i][0]));
+                }
+
+                //Leemos los datos
+                for (int r = 0; r < this.dataGridView1.Rows.Count - 1; r++)
+                {
+                    DataGridViewRow newrow = this.dataGridView1.Rows[r];
+                    DataRow dr = dt.NewRow();
+                    for (int j = 0; j<cabecera.Count;j++)
+                    {
+                        //Validar missingvalue
+                        if (j == cabecera.Count - 1)
+                        {
+                            if (faltante.Count > 0)
+                            {
+                                dr[j] = faltante[0];
+                            }
+                            else
+                            {
+                                dr[j] = "";
+                            }
+                        }
+                        else {
+                            dr[j] = newrow.Cells[j].Value;
+                        }
+                    }
+                    dt.Rows.Add(dr);
+                }
+                this.dataGridView1.DataSource = dt;
+                celdaString = "";
+
+                // Aqui la funcion esta hecha pero falta ver como llamarla en el mismo form del edit, aunque no jale nada
+                //delete_atributo(1);
+
+                //Actualizamos faltantes
+                
+                for(int i = 0; i < this.dataGridView1.Rows.Count-1; i++)
+                {
+                        faltantes++;
+                }
+                label5.Text = "Valores faltantes\n" + faltantes;
+                label6.Text = "Proporción de valores faltantes\n" + ((faltantes * 100) / ((nInstancia - 1) * (cabecera.Count - 1))) + "%";
+                EvalRegex();
+                for (int i = 0; i < this.dataGridView1.Rows.Count; i++)
+                {
+                    DataGridViewRow rowaux = this.dataGridView1.Rows[i];
+                    //rowaux.Cells[cabecera.Count - 1].Style.BackColor = Color.Red;
+                }
+                editando = false;
+            }
         }
     }
 }
