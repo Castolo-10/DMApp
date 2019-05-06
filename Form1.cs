@@ -90,21 +90,19 @@ namespace DMApp
                 string[] headerLabels = firstLine.Split(',');
                 //Obtener no.atributos
 
-
-
-
                 foreach (string headerWord in headerLabels)
                 {
-                    
+                    string[] copia2 = new string[3];
                     dt.Columns.Add(new DataColumn(headerWord));
                     atributo.Add(headerWord + " " + "." + " " + ".");
-                    copia[0] = headerWord;
-                    copia[1] = copia[2] = "";
-                    cabecera.Add(copia);
-                    if(headerWord != "Instancia")
-                    atributoscomboBox.Items.Add(headerWord);
-
-
+                    copia2[0] = headerWord;
+                    copia2[1] = ".";
+                    copia2[2] = ".";
+                    if (headerWord != "Instancia")
+                    {
+                        atributoscomboBox.Items.Add(headerWord);
+                        cabecera.Add(copia2);
+                    }
                 }
 
                 //Leemos los datos
@@ -468,7 +466,7 @@ namespace DMApp
                             nuevo = frm.atributo;
                             modificaciones = frm.modificado;
                             /**/
-                            EvalRegex();
+                            break;
                             /**/
 
                         }
@@ -483,31 +481,31 @@ namespace DMApp
                             return;
                         }
                         //"nuevo" corresponde a el nuevo atributo modificado en el form de atributos
-                        
-                        break;
-                        
                     }
                     //o es usado para contar en que lugar se encuetra ese atributo
                     o++;
                 }
 
-                
-                //Guardar modificación del atributo
-                atributo[o] = nuevo;
-                string [] spliter = atributo[o].Split(' ');
-                cabecera[o + 1][0] = spliter[0];
-                cabecera[o + 1][1] = spliter[1];
-                cabecera[o + 1][2] = atributo[o].Substring((spliter[0].Length + spliter[1].Length) + 2);
-                
-                        
-                //prueba de almacenamiento de cambios
-                label8.Text = cabecera[o+1][0] + ' ' + cabecera[o+1][1] + ' ' + cabecera[o+1][2];
-                atributoscomboBox.Items.RemoveAt(indexCB);
-                atributoscomboBox.Items.Insert(indexCB,cabecera[o+1][0]);
+                if (modificaciones)
+                {
+                    //Guardar modificación del atributo
+                    atributo[o] = nuevo;
+                    string[] spliter = atributo[o].Split(' ');
+                    cabecera[o][0] = spliter[0];
+                    cabecera[o][1] = spliter[1];
+                    cabecera[o][2] = atributo[o].Substring((spliter[0].Length + spliter[1].Length) + 2);
 
-                Update_Grid_Header(old, cabecera[o+1][0]);
-                // Aqui la funcion esta hecha pero falta ver como llamarla en el mismo form del edit, aunque no jale nada
-                //delete_atributo(1);
+
+                    //prueba de almacenamiento de cambios
+                    label8.Text = cabecera[o][0] + ' ' + cabecera[o][1] + ' ' + cabecera[o][2];
+                    atributoscomboBox.Items.RemoveAt(indexCB);
+                    atributoscomboBox.Items.Insert(indexCB, cabecera[o][0]);
+
+                    Update_Grid_Header(old, cabecera[o][0]);
+                    // Aqui la funcion esta hecha pero falta ver como llamarla en el mismo form del edit, aunque no jale nada
+                    //delete_atributo(1);
+                }
+
             }
         }
         private void Update_Grid_Header(string oldname, string newname)
@@ -520,6 +518,7 @@ namespace DMApp
                     break;
                 }
             }
+            EvalRegex();
         }
         private void DataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
@@ -530,6 +529,7 @@ namespace DMApp
                 e.CellStyle.ForeColor = Color.Red;
                 e.CellStyle.BackColor = Color.Red;
             }*/
+            
             Regex rgx;
             int pruebaRegx = 0;
             DataGridViewRow actualRow;
@@ -543,6 +543,10 @@ namespace DMApp
                     {
                         pruebaRegx++;
                         e.CellStyle.BackColor = Color.Red;
+                    }
+                    else
+                    {
+                        e.CellStyle.BackColor = Color.White;
                     }
                 }
                 label8.Text = pruebaRegx.ToString();
@@ -593,7 +597,6 @@ namespace DMApp
             else
                 this.Close();
         }
-        
         private void EvalRegex()
         {
             Regex rgx;
@@ -609,15 +612,29 @@ namespace DMApp
                     {
                         if (!rgx.IsMatch(actualRow.Cells[i].Value.ToString()))
                         {
-                            actualRow.Cells[i].Style.ForeColor = Color.Red;
+                            actualRow.Cells[i].Style.BackColor = Color.Red;
                             pruebaRegx++;
                             
+                        }
+                        else
+                        {
+                            actualRow.Cells[i].Style.BackColor = Color.White;
                         }
                     }
                 }
 
             }
             label8.Text = pruebaRegx.ToString();
+        }
+
+        private void DataGridView1_CellLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            if (Convert.ToString(e.RowIndex) == "")
+            {
+                faltantes++;
+            }
+            label5.Text = "Valores faltantes\n" + faltantes;
+            label6.Text = "Proporción de valores faltantes\n" + ((faltantes * 100) / ((nInstancia - 1) * (cabecera.Count - 1))) + "%";
         }
     }
 }
