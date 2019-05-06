@@ -46,19 +46,15 @@ namespace DMApp
                     sal = frm.salir;
                 }
 
-                if (sal == 0)
-                    this.Close();
                 else if (sal == 1)
                 {
                     GuardarToolStripMenuItem_Click(sender, e);
-                    this.Close();
 
                 }
                 else if (sal == 2)
                 {
 
                     GuardarComoToolStripMenuItem_Click(sender, e);
-                    this.Close();
                 }
             }
             openFileDialog1.Title = "Abrir archivo";
