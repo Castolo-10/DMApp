@@ -99,7 +99,7 @@ namespace DMApp
                     dt.Columns.Add(new DataColumn(headerWord));
                     atributo.Add(headerWord + " " + "." + " " + ".");
                     copia[0] = headerWord;
-                    copia[1] = copia[2] = ".";
+                    copia[1] = copia[2] = "";
                     cabecera.Add(copia);
                     if(headerWord != "Instancia")
                     atributoscomboBox.Items.Add(headerWord);
@@ -467,6 +467,10 @@ namespace DMApp
                         {
                             nuevo = frm.atributo;
                             modificaciones = frm.modificado;
+                            /**/
+                            EvalRegex();
+                            /**/
+
                         }
                         else
                         {
@@ -525,17 +529,6 @@ namespace DMApp
             {
                 e.CellStyle.ForeColor = Color.Red;
                 e.CellStyle.BackColor = Color.Red;
-            }*/
-            // i  columna, j fila
-            /*if (filepath.Contains(".data"))
-            {
-                //DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
-                if(this.dataGridView1.Columns[e.ColumnIndex].Name == cabecera[e.ColumnIndex][0] && e.ColumnIndex != 0)
-                {
-                    Regex rgx = new Regex(cabecera[e.ColumnIndex][2]);
-                    if (!rgx.IsMatch(Convert.ToString(e.Value)))
-                        pruebaRegx++;
-                }
             }*/
             Regex rgx;
             int pruebaRegx = 0;
@@ -601,7 +594,7 @@ namespace DMApp
                 this.Close();
         }
         
-        private void EvalRegex(DataGridViewCellFormattingEventArgs e)
+        private void EvalRegex()
         {
             Regex rgx;
             int pruebaRegx = 0;
@@ -616,9 +609,9 @@ namespace DMApp
                     {
                         if (!rgx.IsMatch(actualRow.Cells[i].Value.ToString()))
                         {
+                            actualRow.Cells[i].Style.ForeColor = Color.Red;
                             pruebaRegx++;
-                            e.CellStyle.ForeColor = Color.Red;
-                            e.CellStyle.BackColor = Color.Red;
+                            
                         }
                     }
                 }
