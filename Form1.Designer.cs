@@ -34,6 +34,7 @@
             this.guardarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.guardarComoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.salirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.análisisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
@@ -48,13 +49,6 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.análisisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.univariableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.bivariableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.numéricoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.categóricoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.correlacionesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.falsosPredictoresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -113,6 +107,13 @@
             this.salirToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
             this.salirToolStripMenuItem.Text = "Salir";
             this.salirToolStripMenuItem.Click += new System.EventHandler(this.SalirToolStripMenuItem_Click);
+            // 
+            // análisisToolStripMenuItem
+            // 
+            this.análisisToolStripMenuItem.Name = "análisisToolStripMenuItem";
+            this.análisisToolStripMenuItem.Size = new System.Drawing.Size(118, 20);
+            this.análisisToolStripMenuItem.Text = "Análisis Estadístico";
+            this.análisisToolStripMenuItem.Click += new System.EventHandler(this.AnálisisToolStripMenuItem_Click);
             // 
             // openFileDialog1
             // 
@@ -189,7 +190,7 @@
             this.atributoscomboBox.AccessibleDescription = "";
             this.atributoscomboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.atributoscomboBox.FormattingEnabled = true;
-            this.atributoscomboBox.Location = new System.Drawing.Point(288, 2);
+            this.atributoscomboBox.Location = new System.Drawing.Point(288, 3);
             this.atributoscomboBox.Name = "atributoscomboBox";
             this.atributoscomboBox.Size = new System.Drawing.Size(121, 21);
             this.atributoscomboBox.TabIndex = 9;
@@ -233,58 +234,6 @@
             this.button1.Text = "Agregar Atributo";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Button1_Click);
-            // 
-            // análisisToolStripMenuItem
-            // 
-            this.análisisToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.univariableToolStripMenuItem,
-            this.bivariableToolStripMenuItem});
-            this.análisisToolStripMenuItem.Name = "análisisToolStripMenuItem";
-            this.análisisToolStripMenuItem.Size = new System.Drawing.Size(118, 20);
-            this.análisisToolStripMenuItem.Text = "Análisis Estadístico";
-            // 
-            // univariableToolStripMenuItem
-            // 
-            this.univariableToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.numéricoToolStripMenuItem,
-            this.categóricoToolStripMenuItem});
-            this.univariableToolStripMenuItem.Name = "univariableToolStripMenuItem";
-            this.univariableToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.univariableToolStripMenuItem.Text = "Univariable";
-            // 
-            // bivariableToolStripMenuItem
-            // 
-            this.bivariableToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.correlacionesToolStripMenuItem,
-            this.falsosPredictoresToolStripMenuItem});
-            this.bivariableToolStripMenuItem.Name = "bivariableToolStripMenuItem";
-            this.bivariableToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.bivariableToolStripMenuItem.Text = "Bivariable";
-            // 
-            // numéricoToolStripMenuItem
-            // 
-            this.numéricoToolStripMenuItem.Name = "numéricoToolStripMenuItem";
-            this.numéricoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.numéricoToolStripMenuItem.Text = "Numérico";
-            this.numéricoToolStripMenuItem.Click += new System.EventHandler(this.NuméricoToolStripMenuItem_Click);
-            // 
-            // categóricoToolStripMenuItem
-            // 
-            this.categóricoToolStripMenuItem.Name = "categóricoToolStripMenuItem";
-            this.categóricoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.categóricoToolStripMenuItem.Text = "Categórico";
-            // 
-            // correlacionesToolStripMenuItem
-            // 
-            this.correlacionesToolStripMenuItem.Name = "correlacionesToolStripMenuItem";
-            this.correlacionesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.correlacionesToolStripMenuItem.Text = "Correlaciones";
-            // 
-            // falsosPredictoresToolStripMenuItem
-            // 
-            this.falsosPredictoresToolStripMenuItem.Name = "falsosPredictoresToolStripMenuItem";
-            this.falsosPredictoresToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.falsosPredictoresToolStripMenuItem.Text = "Falsos Predictores";
             // 
             // Form1
             // 
@@ -339,12 +288,6 @@
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ToolStripMenuItem análisisToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem univariableToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem numéricoToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem categóricoToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem bivariableToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem correlacionesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem falsosPredictoresToolStripMenuItem;
     }
 }
 
