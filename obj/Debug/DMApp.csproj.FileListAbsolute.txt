@@ -52,3 +52,4 @@ E:\Mineria de datos\Proyecto\Etapa1\DMApp\obj\Debug\DMApp.AtributosForm.resource
 C:\Users\USUARIO\Documents\dev\DMApp\obj\Debug\DMApp.AtributosForm.resources
 E:\Mineria de datos\Proyecto\Etapa1\DMApp\obj\Debug\DMApp.SalirForm.resources
 C:\Users\USUARIO\Documents\dev\DMApp\obj\Debug\DMApp.SalirForm.resources
+C:\Users\USUARIO\Documents\dev\DMApp\obj\Debug\DMApp.Univariable_Numerico.resources
