@@ -3,9 +3,31 @@
 @relation airline_passengers
 @attribute passenger_numbers numeric [0-9]+
 @attribute type nominal (tourist|first class)
+@attribute Numero2 numeric [0-9]+
 @missingValue ?
 @data
-112,tourist
-118,first class
-132,first class
-129,tourist
+12,tourist,1
+18,first class,2
+32,first class,2
+29,tourist,3
+29,tourist,5
+12,tourist,8
+18,first class,4
+32,first class,6
+29,tourist,4
+29,tourist,6
+12,tourist,8
+18,first class,9
+32,first class,7
+29,tourist,5
+29,tourist,2
+12,tourist,3
+18,first class,4
+32,first class,6
+29,tourist,6
+29,tourist,9
+12,tourist,8
+18,first class,2
+32,first class,1
+29,tourist,3
+29,tourist,5

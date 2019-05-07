@@ -46,25 +46,21 @@ namespace DMApp
                     sal = frm.salir;
                 }
 
-                if (sal == 0)
-                    this.Close();
                 else if (sal == 1)
                 {
                     GuardarToolStripMenuItem_Click(sender, e);
-                    this.Close();
 
                 }
                 else if (sal == 2)
                 {
 
                     GuardarComoToolStripMenuItem_Click(sender, e);
-                    this.Close();
                 }
             }
             openFileDialog1.Title = "Abrir archivo";
             openFileDialog1.Filter = "Archivos CSV (*.csv)|*.csv|Archivos DATA(*.data)|*.data";
             openFileDialog1.FileName = "";
-            openFileDialog1.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            openFileDialog1.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\dev\\DMApp\\files";
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 dataGridView1.DataSource = null;
@@ -795,6 +791,12 @@ namespace DMApp
                 }
                 editando = false;
             }
+        }
+
+        private void NuméricoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Univariable_Numerico frm = new Univariable_Numerico(dataGridView1, cabecera);
+            frm.ShowDialog();
         }
     }
 }

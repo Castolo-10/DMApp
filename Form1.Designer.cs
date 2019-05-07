@@ -48,6 +48,13 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.análisisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.univariableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bivariableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.numéricoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.categóricoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.correlacionesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.falsosPredictoresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -55,7 +62,8 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1});
+            this.toolStripMenuItem1,
+            this.análisisToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(821, 24);
@@ -181,7 +189,7 @@
             this.atributoscomboBox.AccessibleDescription = "";
             this.atributoscomboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.atributoscomboBox.FormattingEnabled = true;
-            this.atributoscomboBox.Location = new System.Drawing.Point(130, 2);
+            this.atributoscomboBox.Location = new System.Drawing.Point(288, 2);
             this.atributoscomboBox.Name = "atributoscomboBox";
             this.atributoscomboBox.Size = new System.Drawing.Size(121, 21);
             this.atributoscomboBox.TabIndex = 9;
@@ -192,7 +200,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label7.Location = new System.Drawing.Point(68, 4);
+            this.label7.Location = new System.Drawing.Point(226, 4);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(56, 15);
             this.label7.TabIndex = 10;
@@ -218,13 +226,65 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(257, 2);
+            this.button1.Location = new System.Drawing.Point(415, 1);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(91, 23);
             this.button1.TabIndex = 14;
             this.button1.Text = "Agregar Atributo";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Button1_Click);
+            // 
+            // análisisToolStripMenuItem
+            // 
+            this.análisisToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.univariableToolStripMenuItem,
+            this.bivariableToolStripMenuItem});
+            this.análisisToolStripMenuItem.Name = "análisisToolStripMenuItem";
+            this.análisisToolStripMenuItem.Size = new System.Drawing.Size(118, 20);
+            this.análisisToolStripMenuItem.Text = "Análisis Estadístico";
+            // 
+            // univariableToolStripMenuItem
+            // 
+            this.univariableToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.numéricoToolStripMenuItem,
+            this.categóricoToolStripMenuItem});
+            this.univariableToolStripMenuItem.Name = "univariableToolStripMenuItem";
+            this.univariableToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.univariableToolStripMenuItem.Text = "Univariable";
+            // 
+            // bivariableToolStripMenuItem
+            // 
+            this.bivariableToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.correlacionesToolStripMenuItem,
+            this.falsosPredictoresToolStripMenuItem});
+            this.bivariableToolStripMenuItem.Name = "bivariableToolStripMenuItem";
+            this.bivariableToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.bivariableToolStripMenuItem.Text = "Bivariable";
+            // 
+            // numéricoToolStripMenuItem
+            // 
+            this.numéricoToolStripMenuItem.Name = "numéricoToolStripMenuItem";
+            this.numéricoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.numéricoToolStripMenuItem.Text = "Numérico";
+            this.numéricoToolStripMenuItem.Click += new System.EventHandler(this.NuméricoToolStripMenuItem_Click);
+            // 
+            // categóricoToolStripMenuItem
+            // 
+            this.categóricoToolStripMenuItem.Name = "categóricoToolStripMenuItem";
+            this.categóricoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.categóricoToolStripMenuItem.Text = "Categórico";
+            // 
+            // correlacionesToolStripMenuItem
+            // 
+            this.correlacionesToolStripMenuItem.Name = "correlacionesToolStripMenuItem";
+            this.correlacionesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.correlacionesToolStripMenuItem.Text = "Correlaciones";
+            // 
+            // falsosPredictoresToolStripMenuItem
+            // 
+            this.falsosPredictoresToolStripMenuItem.Name = "falsosPredictoresToolStripMenuItem";
+            this.falsosPredictoresToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.falsosPredictoresToolStripMenuItem.Text = "Falsos Predictores";
             // 
             // Form1
             // 
@@ -278,6 +338,13 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ToolStripMenuItem análisisToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem univariableToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem numéricoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem categóricoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem bivariableToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem correlacionesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem falsosPredictoresToolStripMenuItem;
     }
 }
 
