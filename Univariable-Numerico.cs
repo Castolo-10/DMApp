@@ -262,10 +262,12 @@ namespace DMApp
             if (indiCombo1 == indiCombo2)
             {
                 // Label advertencia mismo combo
+                labelCCP.Text = "Selecciona atributos diferentes";
             }
             else if (cabecera[indiCombo1][1] != cabecera[indiCombo2][1])
             {
                 //Advertencia incompatibilidad de tipos
+                labelCCP.Text = "Selecciona atributos de igual tipo";
             }
             else if (cabecera[indiCombo1][1] == "numeric")
             {
@@ -342,7 +344,176 @@ namespace DMApp
             }
             else if (cabecera[indiCombo1][1] == "nominal")
             {
-                //Chi cuadrada con contingencia de tschuprow
+                //Crear arreglo para las columnas
+                DataGridViewRow fila = new DataGridViewRow();
+
+                //Creamos el arreglo en base a los datos del dgv
+
+                string[] elementos1 = new string[dgvaux.RowCount - 1];
+                string[] elementos2 = new string[dgvaux.RowCount - 1];
+                int columna1, columna2;
+
+
+                for (columna1 = 1; columna1 < dgvaux.ColumnCount; columna1++)
+                {
+                    if (dgvaux.Columns[columna1].HeaderText == cabecera[indiCombo1][0])
+                    {
+                        break;
+                    }
+                }
+                for (columna2 = 1; columna2 < dgvaux.ColumnCount; columna2++)
+                {
+                    if (dgvaux.Columns[columna2].HeaderText == cabecera[indiCombo2][0])
+                    {
+                        break;
+                    }
+                }
+                for (int i = 0; i < dgvaux.RowCount - 1; i++)
+                {
+                    fila = dgvaux.Rows[i];
+                    elementos1[i] = fila.Cells[columna1].Value.ToString();
+                    elementos2[i] = fila.Cells[columna2].Value.ToString();
+                }
+
+                
+                //Lista de valores unicos con frecuencia
+                List<string> ListaU1 = new List<string>();
+                List<int> Frecuencias1 = new List<int>();
+
+                List<string> ListaU2 = new List<string>();
+                List<int> Frecuencias2 = new List<int>();
+
+                //
+                int conteo;
+                string aux1, aux2;
+                int repeated1, repeated2;
+
+                for (int i = 0; i < elementos1.Length; i++)
+                {
+                    repeated1 = 0;
+                    aux1 = elementos1[i];
+                    conteo = 0;
+                    foreach (string elem in ListaU1)
+                    {
+                        if (aux1 == elem)
+                        {
+                            repeated1 = 1;
+                            break;
+                        }
+                    }
+                    if (repeated1 == 0)
+                    {
+                        ListaU1.Add(aux1);
+                        for (int j = 0; j < elementos1.Length; j++)
+                        {
+                            if (aux1 == elementos1[j])
+                                conteo++;
+                        }
+                        Frecuencias1.Add(conteo);
+                    }
+                }
+
+                for (int i = 0; i < elementos2.Length; i++)
+                {
+                    repeated2 = 0;
+                    aux2 = elementos2[i];
+                    conteo = 0;
+                    foreach (string elem in ListaU2)
+                    {
+                        if (aux2 == elem)
+                        {
+                            repeated2 = 1;
+                            break;
+                        }
+                    }
+                    if (repeated2 == 0)
+                    {
+                        ListaU2.Add(aux2);
+                        for (int j = 0; j < elementos2.Length; j++)
+                        {
+                            if (aux2 == elementos2[j])
+                                conteo++;
+                        }
+                        Frecuencias2.Add(conteo);
+                    }
+                }
+                
+
+
+                //Crear tabla de contingencia
+
+                int[,] mfrecuencia = new int[ListaU1.Count + 1 , ListaU2.Count + 1];
+                int contador=0;
+
+                for(int a=0; a<ListaU1.Count;a++)
+                {
+                    
+
+                    for(int b=0; b< ListaU2.Count; b++)
+                    {
+                        contador = 0;
+
+                        for (int c = 0; c < elementos1.Length; c++)
+                        {
+
+
+
+
+
+
+
+                            if(elementos1[c]==ListaU1[a] && elementos2[c] == ListaU2[b])
+                            {
+                                contador++; 
+                            }
+
+                        }
+                        mfrecuencia[a, b] = contador;
+
+                    }   
+                    
+                }
+
+                int totalFila = 0;
+                
+                //Lista U1 Columnas
+                for(int a=0; a< ListaU1.Count; a++)
+                {
+                    totalFila = 0;
+
+                    for (int b = 0; b < ListaU2.Count; b++)
+                    {
+                        
+                            totalFila += mfrecuencia[a,b];
+                    }
+
+                    mfrecuencia[a, ListaU2.Count] = totalFila;
+
+                }
+
+                //Lista U2 Filas
+                int totalColumna = 0;
+                for (int a = 0; a < ListaU2.Count; a++)
+                {
+                    totalColumna = 0;
+
+                    for (int b = 0; b < ListaU1.Count; b++)
+                    {
+                        
+                            totalColumna += mfrecuencia[b,a];
+                    }
+
+                    mfrecuencia[ListaU1.Count, a] = totalColumna;
+                }
+
+                mfrecuencia[ListaU1.Count,ListaU2.Count] = elementos1.Length;
+
+                contador = 0;
+                
+
+
+
+
             }
 
         }
