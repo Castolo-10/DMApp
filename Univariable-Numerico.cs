@@ -20,7 +20,7 @@ namespace DMApp
             InitializeComponent();
             dgvaux = dgv;
             cabecera = header;
-            labelMedia.Text = labelModa.Text = labelMediana.Text = labelDvStd.Text = "";
+            labelMedia.Text = labelModa.Text = labelMediana.Text = labelDvStd.Text = labelCCP = "";
 
         }
         private void Univariable_Numerico_Load(object sender, EventArgs e)
@@ -275,7 +275,7 @@ namespace DMApp
                 DataGridViewRow fila = new DataGridViewRow();
 
                 //Creamos el arreglo en base a los datos del dgv
-                
+
                 double[] elementos1 = new double[dgvaux.RowCount - 1];
                 double[] elementos2 = new double[dgvaux.RowCount - 1];
                 int columna1, columna2;
@@ -304,7 +304,7 @@ namespace DMApp
                 double media1, media2;
                 media1 = media2 = 0;
 
-                for(int i = 0; i < elementos1.Length;i++)
+                for (int i = 0; i < elementos1.Length; i++)
                 {
                     media1 += elementos1[i];
                     media2 += elementos2[i];
@@ -314,7 +314,7 @@ namespace DMApp
 
                 // Calculamos las desviaciones estándar
 
-                double sumOfSqrs1, sumOfSqrs2, dvstd1, dvstd2,difMedia1, difMedia2, prodMedia, r;
+                double sumOfSqrs1, sumOfSqrs2, dvstd1, dvstd2, difMedia1, difMedia2, prodMedia, r;
                 sumOfSqrs1 = sumOfSqrs2 = dvstd1 = dvstd2 = difMedia1 = difMedia2 = prodMedia = 0;
 
 
@@ -329,7 +329,7 @@ namespace DMApp
 
                     sumOfSqrs1 += Math.Pow(difMedia1, 2);
                     sumOfSqrs2 += Math.Pow(difMedia2, 2);
-                    
+
 
                 }
 
@@ -339,7 +339,28 @@ namespace DMApp
 
                 r = prodMedia / (elementos1.Length * dvstd1 * dvstd2);
 
-                labelCCP.Text = "Coeficiente de correlación de Pearson: " + r; ;
+                r = 1;
+                labelCCP.Text = "Coeficiente de correlación de Pearson: " + r;
+                if (r == -1)
+                {
+                    labelCCP.Text += "\nCorrelación lineal negativa perfecta";
+                }
+                else if (r < 0)
+                {
+                    labelCCP.Text += "\nCorrelación lineal negativa";
+                }
+                else if (r == 0)
+                {
+                    labelCCP.Text += "\nNo correlacionados";
+                }
+                else if (r < 1)
+                {
+                    labelCCP.Text += "\nCorrelación lineal positiva";
+                }
+                else if (r == 1)
+                {
+                    labelCCP.Text += "\nCorrelación lineal positiva perfecta";
+                }
                 //labelCCP.Text = "Coeficiente de correlación de Pearson: " + Convert.ToString(r) + " " + Convert.ToString(dvstd1) + " " + Convert.ToString(dvstd2)+ " " + elementos1.Length.ToString();
             }
             else if (cabecera[indiCombo1][1] == "nominal")
@@ -375,7 +396,7 @@ namespace DMApp
                     elementos2[i] = fila.Cells[columna2].Value.ToString();
                 }
 
-                
+
                 //Lista de valores unicos con frecuencia
                 List<string> ListaU1 = new List<string>();
                 List<int> Frecuencias1 = new List<int>();
@@ -437,54 +458,38 @@ namespace DMApp
                         Frecuencias2.Add(conteo);
                     }
                 }
-                
-
-
                 //Crear tabla de contingencia
 
-                int[,] mfrecuencia = new int[ListaU1.Count + 1 , ListaU2.Count + 1];
-                int contador=0;
+                double[,] mfrecuencia = new double[ListaU1.Count + 1, ListaU2.Count + 1];
+                int contador = 0;
 
-                for(int a=0; a<ListaU1.Count;a++)
+                for (int a = 0; a < ListaU1.Count; a++)
                 {
-                    
-
-                    for(int b=0; b< ListaU2.Count; b++)
+                    for (int b = 0; b < ListaU2.Count; b++)
                     {
                         contador = 0;
 
                         for (int c = 0; c < elementos1.Length; c++)
                         {
-
-
-
-
-
-
-
-                            if(elementos1[c]==ListaU1[a] && elementos2[c] == ListaU2[b])
+                            if (elementos1[c] == ListaU1[a] && elementos2[c] == ListaU2[b])
                             {
-                                contador++; 
+                                contador++;
                             }
-
                         }
                         mfrecuencia[a, b] = contador;
-
-                    }   
-                    
+                    }
                 }
 
-                int totalFila = 0;
-                
+                double totalFila = 0;
+
                 //Lista U1 Columnas
-                for(int a=0; a< ListaU1.Count; a++)
+                for (int a = 0; a < ListaU1.Count; a++)
                 {
                     totalFila = 0;
 
                     for (int b = 0; b < ListaU2.Count; b++)
                     {
-                        
-                            totalFila += mfrecuencia[a,b];
+                        totalFila += mfrecuencia[a, b];
                     }
 
                     mfrecuencia[a, ListaU2.Count] = totalFila;
@@ -492,30 +497,53 @@ namespace DMApp
                 }
 
                 //Lista U2 Filas
-                int totalColumna = 0;
+                double totalColumna = 0;
                 for (int a = 0; a < ListaU2.Count; a++)
                 {
                     totalColumna = 0;
 
                     for (int b = 0; b < ListaU1.Count; b++)
                     {
-                        
-                            totalColumna += mfrecuencia[b,a];
+                        totalColumna += mfrecuencia[b, a];
                     }
 
                     mfrecuencia[ListaU1.Count, a] = totalColumna;
                 }
+                mfrecuencia[ListaU1.Count, ListaU2.Count] = elementos1.Length;
+                //U1 columnas, U2 filas
+                double[] FrecR = new double[ListaU1.Count * ListaU2.Count];
+                int contFrecR = 0;
+                double p1 = 0;
+                for (int i = 0; i < ListaU1.Count; i++)
+                {
+                    for (int j = 0; j < ListaU2.Count; j++)
+                    {
+                        p1 = (mfrecuencia[i, ListaU2.Count] * mfrecuencia[ListaU1.Count, j])/ elementos1.Length;
 
-                mfrecuencia[ListaU1.Count,ListaU2.Count] = elementos1.Length;
+                        FrecR[contFrecR] = (Math.Pow((mfrecuencia[i, j] - p1), 2)) / p1;
+                        contFrecR++;
+                    }
+                }
+                double chicuadrada = 0;
+                foreach(double frecr in FrecR)
+                {
+                    chicuadrada += frecr;
+                }
+                double cct = 0;
 
-                contador = 0;
-                
+                cct = Math.Sqrt(chicuadrada / (Math.Sqrt((ListaU1.Count - 1) * (ListaU2.Count - 1)) * elementos1.Length));
 
+                labelCCP.Text = "Coeficiente de contingencia de Tschuprow: "+ cct +'\n';
 
-
-
+                if(cct >= 0.5)
+                {
+                    labelCCP.Text += "Completa dependencia entre valores";
+                }
+                else
+                {
+                    labelCCP.Text += "Completa independencia";
+                }
             }
-
         }
     }
 }
