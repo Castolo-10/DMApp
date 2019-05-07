@@ -93,6 +93,7 @@ namespace DMApp
                     }
                     this.Text = "DMApp - " + Path.GetFileName(filepath);
                     MessageBox.Show("El archivo ha sido cargado correctamente", "Aviso");
+                    modificaciones = false;
                     //Actualizar info de labels y textbox sobre el dataset
                 }
             }
@@ -792,8 +793,21 @@ namespace DMApp
                 editando = false;
             }
         }
+        private void UnivariableToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+        }
 
-        private void NuméricoToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CorrelacionesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BivariableToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void AnálisisToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Univariable_Numerico frm = new Univariable_Numerico(dataGridView1, cabecera);
             frm.ShowDialog();
