@@ -302,7 +302,7 @@ namespace DMApp
                 double media1, media2;
                 media1 = media2 = 0;
 
-                for(int i = 1; i < elementos1.Length;i++)
+                for(int i = 0; i < elementos1.Length;i++)
                 {
                     media1 += elementos1[i];
                     media2 += elementos2[i];
@@ -318,18 +318,27 @@ namespace DMApp
 
                 for (int i = 0; i < elementos1.Length; i++)
                 {
+
                     difMedia1 = (elementos1[i] - media1);
                     difMedia2 = (elementos2[i] - media2);
-                    sumOfSqrs1 += Math.Pow(difMedia1, 2);
-                    sumOfSqrs2 += Math.Pow(difMedia2, 2);
+
+                    //arriba
                     prodMedia += (difMedia1 * difMedia2);
 
+                    sumOfSqrs1 += Math.Pow(difMedia1, 2);
+                    sumOfSqrs2 += Math.Pow(difMedia2, 2);
+                    
+
                 }
+
                 dvstd1 = Math.Sqrt(sumOfSqrs1 / (elementos1.Length));
                 dvstd2 = Math.Sqrt(sumOfSqrs2 / (elementos2.Length));
 
+
                 r = prodMedia / (elementos1.Length * dvstd1 * dvstd2);
-                labelCCP.Text = "Coeficiente de correlación de Pearson: " + Convert.ToString(r) + " " + Convert.ToString(dvstd1) + " " + Convert.ToString(dvstd2)+ " " + elementos1.Length.ToString();
+
+                labelCCP.Text = "Coeficiente de correlación de Pearson: " + r; ;
+                //labelCCP.Text = "Coeficiente de correlación de Pearson: " + Convert.ToString(r) + " " + Convert.ToString(dvstd1) + " " + Convert.ToString(dvstd2)+ " " + elementos1.Length.ToString();
             }
             else if (cabecera[indiCombo1][1] == "nominal")
             {
