@@ -35,6 +35,8 @@
             this.guardarComoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.salirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.análisisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.limpiezaDeDatosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.valoresFaltantesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
@@ -49,8 +51,8 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.limpiezaDeDatosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.valoresFaltantesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.muestreoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.normalizarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -117,6 +119,23 @@
             this.análisisToolStripMenuItem.Size = new System.Drawing.Size(118, 20);
             this.análisisToolStripMenuItem.Text = "Análisis Estadístico";
             this.análisisToolStripMenuItem.Click += new System.EventHandler(this.AnálisisToolStripMenuItem_Click);
+            // 
+            // limpiezaDeDatosToolStripMenuItem
+            // 
+            this.limpiezaDeDatosToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.valoresFaltantesToolStripMenuItem,
+            this.muestreoToolStripMenuItem,
+            this.normalizarToolStripMenuItem});
+            this.limpiezaDeDatosToolStripMenuItem.Name = "limpiezaDeDatosToolStripMenuItem";
+            this.limpiezaDeDatosToolStripMenuItem.Size = new System.Drawing.Size(115, 20);
+            this.limpiezaDeDatosToolStripMenuItem.Text = "Limpieza de Datos";
+            // 
+            // valoresFaltantesToolStripMenuItem
+            // 
+            this.valoresFaltantesToolStripMenuItem.Name = "valoresFaltantesToolStripMenuItem";
+            this.valoresFaltantesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.valoresFaltantesToolStripMenuItem.Text = "Valores Faltantes";
+            this.valoresFaltantesToolStripMenuItem.Click += new System.EventHandler(this.ValoresFaltantesToolStripMenuItem_Click);
             // 
             // openFileDialog1
             // 
@@ -238,20 +257,19 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
-            // limpiezaDeDatosToolStripMenuItem
+            // muestreoToolStripMenuItem
             // 
-            this.limpiezaDeDatosToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.valoresFaltantesToolStripMenuItem});
-            this.limpiezaDeDatosToolStripMenuItem.Name = "limpiezaDeDatosToolStripMenuItem";
-            this.limpiezaDeDatosToolStripMenuItem.Size = new System.Drawing.Size(115, 20);
-            this.limpiezaDeDatosToolStripMenuItem.Text = "Limpieza de Datos";
+            this.muestreoToolStripMenuItem.Name = "muestreoToolStripMenuItem";
+            this.muestreoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.muestreoToolStripMenuItem.Text = "Muestreo";
+            this.muestreoToolStripMenuItem.Click += new System.EventHandler(this.MuestreoToolStripMenuItem_Click);
             // 
-            // valoresFaltantesToolStripMenuItem
+            // normalizarToolStripMenuItem
             // 
-            this.valoresFaltantesToolStripMenuItem.Name = "valoresFaltantesToolStripMenuItem";
-            this.valoresFaltantesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.valoresFaltantesToolStripMenuItem.Text = "Valores Faltantes";
-            this.valoresFaltantesToolStripMenuItem.Click += new System.EventHandler(this.ValoresFaltantesToolStripMenuItem_Click);
+            this.normalizarToolStripMenuItem.Name = "normalizarToolStripMenuItem";
+            this.normalizarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.normalizarToolStripMenuItem.Text = "Normalizar";
+            this.normalizarToolStripMenuItem.Click += new System.EventHandler(this.NormalizarToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -308,6 +326,8 @@
         private System.Windows.Forms.ToolStripMenuItem análisisToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem limpiezaDeDatosToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem valoresFaltantesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem muestreoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem normalizarToolStripMenuItem;
     }
 }
 

@@ -832,5 +832,44 @@ namespace DMApp
                 label6.Text = "Proporción de valores faltantes\n" + ((faltantes * 100) / ((nInstancia - 1) * (cabecera.Count() - 1))) + "%";
             }
         }
+
+        private void MuestreoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int tMuestra = Convert.ToInt16((dataGridView1.RowCount - 1) / 2);
+            DataGridView copia1 = new DataGridView();
+            DataGridView copia2 = new DataGridView();
+            DataGridView copia3 = new DataGridView();
+
+            copia1 = dataGridView1;
+            copia2 = dataGridView1;
+            copia3 = dataGridView1;
+
+            for (int i = 0; i < dataGridView1.RowCount; i++)
+            {
+                if (i < tMuestra)
+                {
+                    copia2.Rows.RemoveAt(i);
+                }
+                else
+                {
+                    copia1.Rows.RemoveAt(i);
+                }
+            }
+
+            dataGridView1 = copia1;
+
+            GuardarComoToolStripMenuItem_Click(sender, e);
+
+            dataGridView1 = copia2;
+
+            GuardarComoToolStripMenuItem_Click(sender, e);
+
+            dataGridView1 = copia3;
+        }
+
+        private void NormalizarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

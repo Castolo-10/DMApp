@@ -26,12 +26,15 @@ namespace DMApp
         double moda = 0;
         double q1 = 0;
         double q3 = 0;
+        double min = 0;
+        double max = 0;
         List<double> elementosCpy = new List<double>();
         List<string> elementosCpyS = new List<string>();
         int indiceCabecera = 0;
         string columna = "";
-        List<string> ListaU = new List<string>();
+        List<string> ListaUS = new List<string>();
         List<int> Frecuencias = new List<int>();
+        List<string> Clases = new List<string>();
 
         public Univariable_Numerico(DataGridView dgv, List<string[]> header)
         {
@@ -42,12 +45,16 @@ namespace DMApp
             button1.Enabled = false;
             panel1.Hide();
             panel2.Hide();
+            panel3.Hide();
+            textBox2.Enabled = false;
+            textBox3.Enabled = false;
             radioButton1.Enabled = false;
             radioButton2.Enabled = false;
             radioButton3.Enabled = false;
             radioButton4.Enabled = false;
             radioButton5.Enabled = false;
             button2.Enabled = false;
+            button3.Enabled = false;
 
         }
         private void Univariable_Numerico_Load(object sender, EventArgs e)
@@ -58,7 +65,7 @@ namespace DMApp
             posiciones_out3.Clear();
             elementosCpy.Clear();
             elementosCpyS.Clear();
-            ListaU.Clear();
+            ListaUS.Clear();
             Frecuencias.Clear();
 
             cabecera.Add(cabeceraaux[0]);
@@ -73,6 +80,7 @@ namespace DMApp
 
                 }
             }
+
         }
 
         private void ComboAtributo_SelectedIndexChanged(object sender, EventArgs e)
@@ -84,6 +92,7 @@ namespace DMApp
             if (cabecera[indiceCabecera][1] == "numeric") {
                 panel1.Show();
                 panel2.Show();
+                panel3.Show();
                 double[] elementos = new double[dgvaux.RowCount - 1];
                 int indice;
 
@@ -118,6 +127,9 @@ namespace DMApp
                         else flag = 1;
                     }
                 }
+
+                min = elementos[0];
+                max = elementos[elementos.Length-1];
 
                 //Copiamos elementos
                 for(int i = 0; i < elementos.Length; i++)
@@ -271,6 +283,7 @@ namespace DMApp
             }
             else if (cabecera[indiceCabecera][1] == "nominal")
             {
+                getClasses();
                 panel1.Hide();
                 panel2.Show();
                 radioButton3.Checked = false;
@@ -307,7 +320,7 @@ namespace DMApp
                     repeated = 0;
                     aux = elementos[i];
                     conteo = 0;
-                    foreach (string elem in ListaU)
+                    foreach (string elem in ListaUS)
                     {
                         if (aux == elem)
                         {
@@ -317,7 +330,7 @@ namespace DMApp
                     }
                     if (repeated == 0)
                     {
-                        ListaU.Add(aux);
+                        ListaUS.Add(aux);
                         for (int j = 0; j < elementos.Length; j++)
                         {
                             if (aux == elementos[j])
@@ -338,11 +351,11 @@ namespace DMApp
                     chart2.Series.RemoveAt(i);
                 }*/
                 chart2.Series.Clear();
-                for(int i = 0; i < ListaU.Count; i++)
+                for(int i = 0; i < ListaUS.Count; i++)
                 {
-                    chart2.Series.Add(ListaU[i]);
+                    chart2.Series.Add(ListaUS[i]);
                     chart2.Series[i].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Bar;
-                    chart2.Series[i].XValueMember = ListaU[i];
+                    chart2.Series[i].XValueMember = ListaUS[i];
                     chart2.Series[i].Points.AddY(Frecuencias[i]);
                 }
                 labelMedia.Text = labelModa.Text = labelMediana.Text = labelDvStd.Text = "";
@@ -801,7 +814,7 @@ namespace DMApp
                         }
                         else if(radioButton5.Checked == true)
                         {
-                            elementosCpyS[i] = ListaU[indiceModa];
+                            elementosCpyS[i] = ListaUS[indiceModa];
                         }
                     }
                 }
@@ -843,11 +856,11 @@ namespace DMApp
                 chart1.Hide();
                 chart2.Show();
                 chart2.Series.Clear();
-                for (int i = 0; i < ListaU.Count; i++)
+                for (int i = 0; i < ListaUS.Count; i++)
                 {
-                    chart2.Series.Add(ListaU[i]);
+                    chart2.Series.Add(ListaUS[i]);
                     chart2.Series[i].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Bar;
-                    chart2.Series[i].XValueMember = ListaU[i];
+                    chart2.Series[i].XValueMember = ListaUS[i];
                     chart2.Series[i].Points.AddY(Frecuencias[i]);
                 }
             }
@@ -858,6 +871,139 @@ namespace DMApp
         {
             button1.Enabled = true;
         }
-        
+
+        private void RadioButton8_CheckedChanged(object sender, EventArgs e)
+        {
+            if(radioButton8.Checked == true)
+            {
+                textBox2.Enabled = true;
+                textBox3.Enabled = true;
+            }
+            else
+            {
+                textBox2.Enabled = false;
+                textBox3.Enabled = false;
+            }
+            
+        }
+
+        private void Button3_Click(object sender, EventArgs e)
+        {
+            DataGridViewRow row = new DataGridViewRow();
+            if (radioButton8.Checked == true)
+            {
+                double minN = Convert.ToDouble(textBox2.Text);
+                double maxN = Convert.ToDouble(textBox3.Text);
+                for(int i = 0; i < dgvaux.RowCount - 1; i++)
+                {
+                    row = dgvaux.Rows[i];
+                    row.Cells[indiceCabecera].Value = ((((Convert.ToDouble(row.Cells[indiceCabecera].Value) - min) / (max - min)) * (maxN - minN)) + minN);
+                }
+            }
+            else if(radioButton7.Checked == true){
+                for (int i = 0; i < dgvaux.RowCount - 1; i++)
+                {
+                    row = dgvaux.Rows[i];
+                    row.Cells[indiceCabecera].Value = (Convert.ToDouble(row.Cells[indiceCabecera].Value) - media) / Math.Pow((Convert.ToDouble(row.Cells[indiceCabecera].Value) - media), 2);
+                 
+                }
+            }
+            else if(radioButton6.Checked == true)
+            {
+                double sa = 0;
+                double aux;
+                for (int i = 0; i < dgvaux.RowCount - 1; i++)
+                {
+                    row = dgvaux.Rows[i];
+                    sa += Math.Abs(Convert.ToDouble(row.Cells[indiceCabecera].Value) - media);
+
+                }
+
+                aux = sa * (1 / (dgvaux.RowCount - 1));
+                aux = aux * (1/Convert.ToDouble(dgvaux.RowCount-1));
+                for (int i = 0; i < dgvaux.RowCount - 1; i++)
+                {
+                    row = dgvaux.Rows[i];
+                    row.Cells[indiceCabecera].Value = (Convert.ToDouble(row.Cells[indiceCabecera].Value) - media)/aux;
+
+                }
+            }
+            this.DialogResult = DialogResult.OK;
+        }
+
+        private void TextBox2_TextChanged(object sender, EventArgs e)
+        {
+            validar();
+        }
+
+        private void TextBox3_TextChanged(object sender, EventArgs e)
+        {
+            validar();
+        }
+
+        private void validar()
+        {
+            if (textBox2.Text == "" && textBox3.Text == "")
+            {
+                button3.Enabled = false;
+            }
+            else if(textBox2.Text != "" && textBox3.Text != "")
+            {
+                button3.Enabled = true;
+            }
+        }
+
+        private void RadioButton7_CheckedChanged(object sender, EventArgs e)
+        {
+            button3.Enabled = true;
+        }
+
+        private void RadioButton6_CheckedChanged(object sender, EventArgs e)
+        {
+            button3.Enabled = true;
+        }
+
+        private void getClasses()
+        {
+            /*Clases.Clear();
+            DataGridViewRow row = new DataGridViewRow();
+            if (cabecera[indiceCabecera][2][0]=='(')
+            {
+                string[] arr1 = cabecera[indiceCabecera][2].Split('(');
+                string[] arr2 = arr1[1].Split(')');
+                string[] arr3 = arr2[0].Split('|');
+
+                foreach(string clase in arr3)
+                {
+                    Clases.Add(clase);
+                }
+            }
+            else
+            {
+                string[] arr1 = cabecera[indiceCabecera][2].Split('|');
+
+                foreach (string clase in arr1)
+                {
+                    Clases.Add(clase);
+                }
+            }
+            foreach(string item in Clases)
+            {
+                comboBox1.Items.Add(item);
+            }
+            
+            foreach (string item in Clases)
+            {
+                for (int i = 0; i < ListaUS.Count; i++)
+                {
+                    if (item != ListaUS[i])
+                    {
+                        comboBox2.Items.Add(ListaUS[i]);
+                        break;
+                    }
+                }
+            }
+            int z = 1;*/
+        }
     }
 }
