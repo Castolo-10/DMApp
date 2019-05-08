@@ -813,7 +813,10 @@ namespace DMApp
         private void AnálisisToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Univariable_Numerico frm = new Univariable_Numerico(dataGridView1, cabecera);
-            frm.ShowDialog();
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                dataGridView1 = frm.dgvaux;
+            }
         }
 
         private void ValoresFaltantesToolStripMenuItem_Click(object sender, EventArgs e)

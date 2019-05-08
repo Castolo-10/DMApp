@@ -12,9 +12,22 @@ namespace DMApp
 {
     public partial class Univariable_Numerico : Form
     {
-        DataGridView dgvaux;
+        public DataGridView dgvaux { get; set; }
         List<string[]> cabecera = new List<string[]>();
         List<string[]> cabeceraaux;
+        double riq = 0;
+        int count1, count3;
+        List<int> posiciones_out1 = new List<int>();
+        List<int> posiciones_out3 = new List<int>();
+        double nuevo1 = 0;
+        double nuevo3 = 0;
+        double media = 0;
+        double mediana = 0;
+        double q1 = 0;
+        double q3 = 0;
+        List<double> elementosCpy = new List<double>();
+        int indiceCabecera = 0;
+        string columna = "";
 
         public Univariable_Numerico(DataGridView dgv, List<string[]> header)
         {
@@ -22,6 +35,10 @@ namespace DMApp
             dgvaux = dgv;
             cabeceraaux = header;
             labelMedia.Text = labelModa.Text = labelMediana.Text = labelDvStd.Text = labelCCP.Text = "";
+            button1.Enabled = false;
+            panel1.Hide();
+            radioButton1.Enabled = false;
+            radioButton2.Enabled = false;
 
         }
         private void Univariable_Numerico_Load(object sender, EventArgs e)
@@ -43,10 +60,11 @@ namespace DMApp
         private void ComboAtributo_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Creamos el arreglo en base a los datos del dgv
-            string columna = comboAtributo.SelectedItem.ToString();
-            int indiceCabecera = comboAtributo.SelectedIndex + 1;
+            columna = comboAtributo.SelectedItem.ToString();
+            indiceCabecera = comboAtributo.SelectedIndex + 1;
             DataGridViewRow fila = new DataGridViewRow();
             if (cabecera[indiceCabecera][1] == "numeric") {
+                panel1.Show();
                 double[] elementos = new double[dgvaux.RowCount - 1];
                 int indice;
 
@@ -62,7 +80,7 @@ namespace DMApp
                     fila = dgvaux.Rows[i];
                     elementos[i] = Convert.ToDouble(fila.Cells[indice].Value);
                 }
-                
+
                 //Ordenamos el arreglo
                 double val;
                 int flag;
@@ -82,8 +100,14 @@ namespace DMApp
                     }
                 }
 
+                //Copiamos elementos
+                for(int i = 0; i < elementos.Length; i++)
+                {
+                    elementosCpy.Add(elementos[i]);
+                }
+
                 //Calculamos Media
-                double media = 0;
+                media = 0;
 
                 foreach (double valor in elementos)
                 {
@@ -96,7 +120,7 @@ namespace DMApp
 
                 int ismediana = elementos.Length % 2;
                 int indicemediana = elementos.Length / 2;
-                double mediana = (ismediana == 1) ? elementos[Convert.ToInt16(indicemediana - 0.5)] : ((elementos[indicemediana - 1] + elementos[indicemediana]) / 2);
+                mediana = (ismediana == 1) ? elementos[Convert.ToInt16(indicemediana - 0.5)] : ((elementos[indicemediana - 1] + elementos[indicemediana]) / 2);
                 labelMediana.Text = "Mediana: " + mediana.ToString();
 
                 //Lista de valores únicos
@@ -154,7 +178,6 @@ namespace DMApp
                 labelDvStd.Text = "Desviación estándar: " + dvstd.ToString();
 
                 //Cuartiles
-                double q1, q3;
 
                 q1 = elementos[(elementos.Length / 4) - 1];
                 q3 = elementos[((elementos.Length / 4) * 3) - 1];
@@ -174,9 +197,62 @@ namespace DMApp
                 chart1.Series[columna].XValueMember = columna;
 
                 chart1.Series[columna].Points.AddXY(0, elementos[0], elementos[elementos.Length - 1], q1, q3, media, mediana);
+
+                // Detección de outliers
+
+                riq = q3 - q1;
+
+                nuevo1 = q1 - (3 * riq);
+                nuevo3 = q3 + (3 * riq);
+
+                for (indice = 1; indice < dgvaux.ColumnCount; indice++)
+                {
+                    if (dgvaux.Columns[indice].HeaderText == columna)
+                    {
+                        break;
+                    }
+                }
+                for (int i = 0; i < dgvaux.RowCount - 1; i++)
+                {
+                    fila = dgvaux.Rows[i];
+                    if (Convert.ToDouble(fila.Cells[indice].Value) > nuevo3 || Convert.ToDouble(fila.Cells[indice].Value) < nuevo1)
+                    {
+                        count3++;
+                        posiciones_out3.Add(i);
+                    }
+                }
+
+                nuevo1 = q1 - (1.5 * riq);
+                nuevo3 = q3 + (1.5 * riq);
+
+                for (indice = 1; indice < dgvaux.ColumnCount; indice++)
+                {
+                    if (dgvaux.Columns[indice].HeaderText == columna)
+                    {
+                        break;
+                    }
+                }
+                for (int i = 0; i < dgvaux.RowCount - 1; i++)
+                {
+                    fila = dgvaux.Rows[i];
+                    if (Convert.ToDouble(fila.Cells[indice].Value) > nuevo3 || Convert.ToDouble(fila.Cells[indice].Value) < nuevo1)
+                    {
+                        count1++;
+                        posiciones_out1.Add(i);
+                    }
+                }
+                if(count1 > 0)
+                {
+                    radioButton1.Enabled = true;
+                }
+                if(count3 > 0)
+                {
+                    radioButton2.Enabled = true;
+                }
             }
             else if (cabecera[indiceCabecera][1] == "nominal")
             {
+                panel1.Hide();
                 string[] elementos = new string[dgvaux.RowCount - 1];
                 int indice;
 
@@ -548,5 +624,67 @@ namespace DMApp
                 }
             }
         }
+
+        private void RadioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            button1.Enabled = true;
+        }
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            if (radioButton1.Checked == true)//1.5 IQR
+            {
+                for(int i = 0; i<elementosCpy.Count;i++)
+                {
+                    foreach(int value in posiciones_out1)
+                    {
+                        if(i == value)
+                        {
+                            elementosCpy[i] = (elementosCpy[i] - media) / Math.Pow((elementosCpy[i] - media), 2);
+                        }
+                    }
+                }
+            }
+            else if (radioButton2.Checked == false)//3 IQR
+            {
+                for (int i = 0; i < elementosCpy.Count; i++)
+                {
+                    foreach (int value in posiciones_out3)
+                    {
+                        if (i == value)
+                        {
+                            elementosCpy[i] = (elementosCpy[i] - media) / Math.Pow((elementosCpy[i] - media), 2);
+                            
+                        }
+                    }
+                }
+            }
+            DataGridViewRow row = new DataGridViewRow();
+            for(int i = 0; i < dgvaux.RowCount - 1;i++) {
+                row = dgvaux.Rows[i];
+                row.Cells[indiceCabecera].Value = elementosCpy[i];
+            }
+            //Actualizamos el boxplot
+            //BoxPlot
+
+            chart1.Show();
+            chart2.Hide();
+
+            chart1.Series.Clear();
+
+            chart1.Series.Add(columna);
+            chart1.Series[columna].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.BoxPlot;
+            chart1.Series[columna].XValueMember = columna;
+
+            chart1.Series[columna].Points.AddXY(0, elementosCpy[0], elementosCpy[elementosCpy.Count - 1], q1, q3, media, mediana);
+
+            this.DialogResult = DialogResult.OK;
+        }
+
+        private void RadioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            button1.Enabled = true;
+        }
+        
     }
 }

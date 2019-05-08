@@ -12,8 +12,8 @@ sunny,85,85,FALSE,no
 rainy,80,90,TRUE,no
 overcast,83,86,FALSE,yes
 sunny,69,75,FALSE,no
-rainy,70,96,FALSE,yes
-rainy,81,80,FALSE,yes
+rainy,2,96,FALSE,yes
+rainy,500,80,FALSE,yes
 rainy,65,70,TRUE,no
 overcast,64,65,TRUE,yes
 sunny,72,95,TRUE,no
