@@ -49,6 +49,8 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.limpiezaDeDatosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.valoresFaltantesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -57,10 +59,11 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1,
-            this.análisisToolStripMenuItem});
+            this.análisisToolStripMenuItem,
+            this.limpiezaDeDatosToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(821, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(909, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.MenuStrip1_ItemClicked);
@@ -125,7 +128,7 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(12, 27);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(563, 411);
+            this.dataGridView1.Size = new System.Drawing.Size(649, 411);
             this.dataGridView1.TabIndex = 1;
             this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.DataGridView1_CellFormatting);
             this.dataGridView1.CellStateChanged += new System.Windows.Forms.DataGridViewCellStateChangedEventHandler(this.DataGridView1_CellStateChanged);
@@ -134,7 +137,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(584, 55);
+            this.label1.Location = new System.Drawing.Point(672, 55);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(100, 13);
             this.label1.TabIndex = 3;
@@ -143,7 +146,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(581, 11);
+            this.label2.Location = new System.Drawing.Point(669, 11);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(149, 13);
             this.label2.TabIndex = 4;
@@ -152,7 +155,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(584, 204);
+            this.label3.Location = new System.Drawing.Point(672, 204);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(114, 13);
             this.label3.TabIndex = 5;
@@ -161,7 +164,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(584, 243);
+            this.label4.Location = new System.Drawing.Point(672, 243);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(107, 13);
             this.label4.TabIndex = 6;
@@ -170,7 +173,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(584, 283);
+            this.label5.Location = new System.Drawing.Point(672, 283);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(85, 13);
             this.label5.TabIndex = 7;
@@ -179,7 +182,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(584, 318);
+            this.label6.Location = new System.Drawing.Point(672, 318);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(153, 13);
             this.label6.TabIndex = 8;
@@ -190,7 +193,7 @@
             this.atributoscomboBox.AccessibleDescription = "";
             this.atributoscomboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.atributoscomboBox.FormattingEnabled = true;
-            this.atributoscomboBox.Location = new System.Drawing.Point(288, 3);
+            this.atributoscomboBox.Location = new System.Drawing.Point(443, 3);
             this.atributoscomboBox.Name = "atributoscomboBox";
             this.atributoscomboBox.Size = new System.Drawing.Size(121, 21);
             this.atributoscomboBox.TabIndex = 9;
@@ -201,7 +204,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label7.Location = new System.Drawing.Point(226, 4);
+            this.label7.Location = new System.Drawing.Point(381, 4);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(56, 15);
             this.label7.TabIndex = 10;
@@ -209,7 +212,7 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(587, 27);
+            this.textBox1.Location = new System.Drawing.Point(675, 27);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(222, 20);
             this.textBox1.TabIndex = 12;
@@ -217,7 +220,7 @@
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(587, 72);
+            this.textBox2.Location = new System.Drawing.Point(675, 72);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
             this.textBox2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -227,7 +230,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(415, 1);
+            this.button1.Location = new System.Drawing.Point(570, 1);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(91, 23);
             this.button1.TabIndex = 14;
@@ -235,11 +238,26 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
+            // limpiezaDeDatosToolStripMenuItem
+            // 
+            this.limpiezaDeDatosToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.valoresFaltantesToolStripMenuItem});
+            this.limpiezaDeDatosToolStripMenuItem.Name = "limpiezaDeDatosToolStripMenuItem";
+            this.limpiezaDeDatosToolStripMenuItem.Size = new System.Drawing.Size(115, 20);
+            this.limpiezaDeDatosToolStripMenuItem.Text = "Limpieza de Datos";
+            // 
+            // valoresFaltantesToolStripMenuItem
+            // 
+            this.valoresFaltantesToolStripMenuItem.Name = "valoresFaltantesToolStripMenuItem";
+            this.valoresFaltantesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.valoresFaltantesToolStripMenuItem.Text = "Valores Faltantes";
+            this.valoresFaltantesToolStripMenuItem.Click += new System.EventHandler(this.ValoresFaltantesToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(821, 450);
+            this.ClientSize = new System.Drawing.Size(909, 450);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.textBox1);
@@ -288,6 +306,8 @@
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ToolStripMenuItem análisisToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem limpiezaDeDatosToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem valoresFaltantesToolStripMenuItem;
     }
 }
 
