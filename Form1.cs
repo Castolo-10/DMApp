@@ -518,19 +518,22 @@ namespace DMApp
 
                 if (modificaciones)
                 {
+                    int auxo = o;
                     //Guardar modificación del atributo
+                    if (filepath.Contains(".data"))
+                        auxo++;
                     atributo[o] = nuevo;
                     string[] spliter = atributo[o].Split(' ');
-                    cabecera[o+1][0] = spliter[0];
-                    cabecera[o+1][1] = spliter[1];
-                    cabecera[o+1][2] = atributo[o].Substring((spliter[0].Length + spliter[1].Length) + 2);
+                    cabecera[auxo][0] = spliter[0];
+                    cabecera[auxo][1] = spliter[1];
+                    cabecera[auxo][2] = atributo[o].Substring((spliter[0].Length + spliter[1].Length) + 2);
 
 
                     //prueba de almacenamiento de cambios
                     atributoscomboBox.Items.RemoveAt(indexCB);
-                    atributoscomboBox.Items.Insert(indexCB, cabecera[o+1][0]);
+                    atributoscomboBox.Items.Insert(indexCB, cabecera[auxo][0]);
 
-                    Update_Grid_Header(old, cabecera[o+1][0]);
+                    Update_Grid_Header(old, cabecera[auxo][0]);
                     // Aqui la funcion esta hecha pero falta ver como llamarla en el mismo form del edit, aunque no jale nada
                     //delete_atributo(1);
                 }
@@ -811,6 +814,20 @@ namespace DMApp
         {
             Univariable_Numerico frm = new Univariable_Numerico(dataGridView1, cabecera);
             frm.ShowDialog();
+        }
+
+        private void ValoresFaltantesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //Abrir form faltantes
+            Faltantes frm = new Faltantes(dataGridView1, modificaciones, cabecera, filepath, faltante, faltantes);
+            if(frm.ShowDialog() == DialogResult.OK)
+            {
+                dataGridView1 = frm.dgv;
+                faltantes = frm.faltantes1;
+                modificaciones = frm.modificado;
+                label5.Text = "Valores faltantes\n" + faltantes;
+                label6.Text = "Proporción de valores faltantes\n" + ((faltantes * 100) / ((nInstancia - 1) * (cabecera.Count() - 1))) + "%";
+            }
         }
     }
 }

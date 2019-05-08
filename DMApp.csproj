@@ -53,6 +53,12 @@
     <Compile Include="AtributosForm.Designer.cs">
       <DependentUpon>AtributosForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Faltantes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Faltantes.Designer.cs">
+      <DependentUpon>Faltantes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -75,6 +81,9 @@
     </Compile>
     <EmbeddedResource Include="AtributosForm.resx">
       <DependentUpon>AtributosForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Faltantes.resx">
+      <DependentUpon>Faltantes.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

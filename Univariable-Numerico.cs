@@ -13,25 +13,28 @@ namespace DMApp
     public partial class Univariable_Numerico : Form
     {
         DataGridView dgvaux;
-        List<string[]> cabecera;
+        List<string[]> cabecera = new List<string[]>();
+        List<string[]> cabeceraaux;
 
         public Univariable_Numerico(DataGridView dgv, List<string[]> header)
         {
             InitializeComponent();
             dgvaux = dgv;
-            cabecera = header;
-            labelMedia.Text = labelModa.Text = labelMediana.Text = labelDvStd.Text = labelCCP = "";
+            cabeceraaux = header;
+            labelMedia.Text = labelModa.Text = labelMediana.Text = labelDvStd.Text = labelCCP.Text = "";
 
         }
         private void Univariable_Numerico_Load(object sender, EventArgs e)
         {
-            for(int i = 1; i < cabecera.Count; i++)
+            cabecera.Add(cabeceraaux[0]);
+            for(int i = 1; i < cabeceraaux.Count; i++)
             {
-                if(cabecera[i][1] == "numeric" || cabecera[i][1] == "nominal")
+                if(cabeceraaux[i][1] == "numeric" || cabeceraaux[i][1] == "nominal")
                 {
-                    comboAtributo.Items.Add(cabecera[i][0]);
-                    PrimerAcomboBox.Items.Add(cabecera[i][0]);
-                    SegundoAcomboBox.Items.Add(cabecera[i][0]);
+                    comboAtributo.Items.Add(cabeceraaux[i][0]);
+                    PrimerAcomboBox.Items.Add(cabeceraaux[i][0]);
+                    SegundoAcomboBox.Items.Add(cabeceraaux[i][0]);
+                    cabecera.Add(cabeceraaux[i]);
 
                 }
             }
@@ -539,7 +542,7 @@ namespace DMApp
                 {
                     labelCCP.Text += "Completa dependencia entre valores";
                 }
-                else
+                else if(cct<0.5)
                 {
                     labelCCP.Text += "Completa independencia";
                 }
