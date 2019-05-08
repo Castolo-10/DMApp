@@ -23,11 +23,15 @@ namespace DMApp
         double nuevo3 = 0;
         double media = 0;
         double mediana = 0;
+        double moda = 0;
         double q1 = 0;
         double q3 = 0;
         List<double> elementosCpy = new List<double>();
+        List<string> elementosCpyS = new List<string>();
         int indiceCabecera = 0;
         string columna = "";
+        List<string> ListaU = new List<string>();
+        List<int> Frecuencias = new List<int>();
 
         public Univariable_Numerico(DataGridView dgv, List<string[]> header)
         {
@@ -37,12 +41,26 @@ namespace DMApp
             labelMedia.Text = labelModa.Text = labelMediana.Text = labelDvStd.Text = labelCCP.Text = "";
             button1.Enabled = false;
             panel1.Hide();
+            panel2.Hide();
             radioButton1.Enabled = false;
             radioButton2.Enabled = false;
+            radioButton3.Enabled = false;
+            radioButton4.Enabled = false;
+            radioButton5.Enabled = false;
+            button2.Enabled = false;
 
         }
         private void Univariable_Numerico_Load(object sender, EventArgs e)
         {
+            //Reiniciamos listas
+            cabecera.Clear();
+            posiciones_out1.Clear();
+            posiciones_out3.Clear();
+            elementosCpy.Clear();
+            elementosCpyS.Clear();
+            ListaU.Clear();
+            Frecuencias.Clear();
+
             cabecera.Add(cabeceraaux[0]);
             for(int i = 1; i < cabeceraaux.Count; i++)
             {
@@ -65,6 +83,7 @@ namespace DMApp
             DataGridViewRow fila = new DataGridViewRow();
             if (cabecera[indiceCabecera][1] == "numeric") {
                 panel1.Show();
+                panel2.Show();
                 double[] elementos = new double[dgvaux.RowCount - 1];
                 int indice;
 
@@ -131,7 +150,7 @@ namespace DMApp
                 int conteo;
                 int previomax = 0;
                 double aux;
-                double moda = 0;
+                moda = 0;
                 int repeated;
 
                 for (int i = 0; i < elementos.Length; i++)
@@ -253,6 +272,9 @@ namespace DMApp
             else if (cabecera[indiceCabecera][1] == "nominal")
             {
                 panel1.Hide();
+                panel2.Show();
+                radioButton3.Checked = false;
+                radioButton3.Enabled = false;
                 string[] elementos = new string[dgvaux.RowCount - 1];
                 int indice;
 
@@ -268,10 +290,12 @@ namespace DMApp
                     fila = dgvaux.Rows[i];
                     elementos[i] = fila.Cells[indice].Value.ToString();
                 }
-                //Lista de valores únicos
 
-                List<string> ListaU = new List<string>();
-                List<int> Frecuencias = new List<int>();
+                //Copiamos elementos
+                for (int i = 0; i < elementos.Length; i++)
+                {
+                    elementosCpyS.Add(elementos[i]);
+                }
 
                 //Calculamos moda
                 int conteo;
@@ -302,6 +326,7 @@ namespace DMApp
                         Frecuencias.Add(conteo);
                     }
                 }
+
                 // Hacemos la gráfica de barras para las frcuencias
 
                 //Limpia el chart
@@ -678,6 +703,154 @@ namespace DMApp
 
             chart1.Series[columna].Points.AddXY(0, elementosCpy[0], elementosCpy[elementosCpy.Count - 1], q1, q3, media, mediana);
 
+            this.DialogResult = DialogResult.OK;
+        }
+
+        private void TextBox1_TextChanged(object sender, EventArgs e)
+        {
+            if (cabecera[indiceCabecera][1] == "numeric")
+            {
+                if (textBox1.Text == "")
+                {
+                    radioButton3.Enabled = false;
+                    radioButton4.Enabled = false;
+                    radioButton5.Enabled = false;
+                    button2.Enabled = false;
+                }
+                else
+                {
+                    radioButton3.Enabled = true;
+                    radioButton4.Enabled = true;
+                    radioButton5.Enabled = true;
+                }
+            }
+            else if(cabecera[indiceCabecera][1] == "nominal")
+            {
+                if (textBox1.Text == "")
+                {
+                    radioButton3.Enabled = false;
+                    radioButton4.Enabled = false;
+                    radioButton5.Enabled = false;
+                    button2.Enabled = false;
+                }
+                else
+                {
+                    radioButton3.Checked = false;
+                    radioButton4.Checked = false;
+                    radioButton5.Enabled = true;
+                }
+            }
+        }
+
+        private void RadioButton3_CheckedChanged(object sender, EventArgs e)
+        {
+            button2.Enabled = true;
+        }
+
+        private void RadioButton4_CheckedChanged(object sender, EventArgs e)
+        {
+            button2.Enabled = true;
+        }
+
+        private void RadioButton5_CheckedChanged(object sender, EventArgs e)
+        {
+            button2.Enabled = true;
+        }
+
+        private void Button2_Click(object sender, EventArgs e)
+        {
+            string busqueda = textBox1.Text;
+
+            int max = 0;
+            int indiceModa = 0;
+            for (int i = 0; i < Frecuencias.Count; i++)
+            {
+                if (Frecuencias[i] > max)
+                {
+                    max = Frecuencias[i];
+                    indiceModa = i;
+                }
+            }
+
+            for (int i = 0; i < dgvaux.RowCount - 1; i++)
+            {
+                if(cabecera[indiceCabecera][1] == "numeric")
+                {
+                    if(busqueda == elementosCpy[i].ToString())
+                    {
+                        if(radioButton3.Checked == true) {
+                            elementosCpy[i] = media;
+                        }
+                        else if(radioButton4.Checked == true)
+                        {
+                            elementosCpy[i] = mediana;
+                        }
+                        else
+                        {
+                            elementosCpy[i] = moda;
+                        }
+                    }
+                }
+                else if(cabecera[indiceCabecera][1] == "nominal")
+                {
+                    if (busqueda == elementosCpyS[i])
+                    {
+                        if (radioButton4.Checked == true)
+                        {
+                            elementosCpyS[i] = mediana.ToString();
+                        }
+                        else if(radioButton5.Checked == true)
+                        {
+                            elementosCpyS[i] = ListaU[indiceModa];
+                        }
+                    }
+                }
+            }
+
+            DataGridViewRow row = new DataGridViewRow();
+            for (int i = 0; i < dgvaux.RowCount - 1; i++)
+            {
+                row = dgvaux.Rows[i];
+                if(cabecera[indiceCabecera][1] == "numeric")
+                    row.Cells[indiceCabecera].Value = elementosCpy[i];
+                else if(cabecera[indiceCabecera][1] == "nominal")
+                    row.Cells[indiceCabecera].Value = elementosCpyS[i];
+            }
+
+            if (cabecera[indiceCabecera][1] == "numeric")
+            {
+                //Actualizamos el boxplot
+                //BoxPlot
+
+                chart1.Show();
+                chart2.Hide();
+
+                chart1.Series.Clear();
+
+                chart1.Series.Add(columna);
+                chart1.Series[columna].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.BoxPlot;
+                chart1.Series[columna].XValueMember = columna;
+
+                chart1.Series[columna].Points.AddXY(0, elementosCpy[0], elementosCpy[elementosCpy.Count - 1], q1, q3, media, mediana);
+
+                this.DialogResult = DialogResult.OK;
+            }
+            else if(cabecera[indiceCabecera][1] == "numeric")
+            {
+                // Hacemos la gráfica de barras para las frcuencias
+
+                //Limpia el chart
+                chart1.Hide();
+                chart2.Show();
+                chart2.Series.Clear();
+                for (int i = 0; i < ListaU.Count; i++)
+                {
+                    chart2.Series.Add(ListaU[i]);
+                    chart2.Series[i].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Bar;
+                    chart2.Series[i].XValueMember = ListaU[i];
+                    chart2.Series[i].Points.AddY(Frecuencias[i]);
+                }
+            }
             this.DialogResult = DialogResult.OK;
         }
 
